@@ -1,324 +1,391 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Syndika - Where Web3 Startups Get Discovered</title>
-    <style>
-        :root {
-            --dark-background: #0a0a0a;
-            --accent-color-primary: #6b46c1;
-            --accent-color-secondary: #d69e2e;
-            --text-color: #ffffff;
-            --subtle-text-color: #bbbbbb;
-            --footer-background: #1a1a1a;
-            --card-background: #1a1a1a;
-            --header-border: rgba(255,255,255,0.1);
-        }
-        * { box-sizing: border-box; }
-        body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"; background-color: var(--dark-background); color: var(--text-color); line-height: 1.6; overflow-x: hidden; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-        h1, h2, h3, h4 { color: var(--text-color); }
-        a { color: var(--accent-color-primary); text-decoration: none; transition: color 0.3s ease; }
-        a:hover { color: var(--accent-color-secondary); }
-        .ai-badge { background-color: var(--accent-color-primary); color: var(--dark-background); padding: 6px 14px; border-radius: 6px; font-size: 0.9em; font-weight: bold; display: inline-block; margin-bottom: 12px; }
-        header { padding: 20px 0; text-align: center; border-bottom: 1px solid var(--header-border); }
-        header h1 { font-size: 2.8em; margin: 6px 0 8px; }
-        header p { font-size: 1.1em; color: var(--subtle-text-color); }
-        .hero { text-align: center; padding: 100px 0; background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)); position: relative; }
-        .hero h1 { font-size: 3.4em; margin: 0 0 14px; line-height: 1.1; text-shadow: 0 5px 15px rgba(0,0,0,0.5); }
-        .hero p { font-size: 1.2em; color: var(--subtle-text-color); max-width: 800px; margin: 0 auto; }
-        .hero .ai-enhancement { font-size: 1.05em; color: var(--accent-color-secondary); margin-top: 12px; font-style: italic; }
-        .section { padding: 80px 0; text-align: center; }
-        .section h2 { font-size: 3em; margin-bottom: 20px; display: inline-block; position: relative; }
-        .section p { font-size: 1.15em; color: var(--subtle-text-color); }
-        .section-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; margin-top: 20px; }
-        .section-content .item { background-color: var(--card-background); padding: 22px; border-radius: 12px; text-align: left; border: 1px solid rgba(255,255,255,0.05); min-height: 120px; }
-        .section-content .item h3 { font-size: 1.25em; margin-bottom: 8px; color: var(--accent-color-primary); }
-        .section-content .item p { font-size: 1em; color: var(--subtle-text-color); margin: 0; }
-        .team .section-content { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }
-        .team .member { background-color: var(--card-background); padding: 18px; border-radius: 12px; text-align: center; border: 1px solid rgba(255,255,255,0.05); }
-        .team .member:hover { transform: translateY(-3px); box-shadow: 0 8px 16px rgba(0,0,0,0.25); }
-        .team .avatar { width: 72px; height: 72px; border-radius: 50%; display: inline-block; }
-        .team .name { display: block; margin-top: 8px; font-weight: bold; color: #fff; }
-        .team .title { font-size: 0.85em; color: var(--subtle-text-color); }
-        /* Inline SVG helper sizes for small logos */
-        .partner { display: inline-block; width: 120px; height: 60px; vertical-align: middle; }
-        /* Testimonials */
-        .testimonials .item { background-color: var(--card-background); padding: 20px; border-radius: 10px; }
-        .testimonials .item p { font-style: italic; color: var(--subtle-text-color); }
-        .partners .section-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 28px; justify-items: center; align-items: center; }
-        /* About and footer */
-        .about { background-color: #111; padding: 80px 0; }
-        .about .content { text-align: left; }
-        footer { background-color: var(--footer-background); padding: 40px 0; text-align: center; color: var(--subtle-text-color); }
-        @media (max-width: 900px) {
-            .hero h1 { font-size: 3em; }
-        }
-        @media (max-width: 600px) {
-            .hero { padding: 60px 0; }
-            .hero h1 { font-size: 2.6em; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Syndika — Where Web3 Startups Get Discovered</title>
+<style>
+:root {
+  --dark: #0a0a0a;
+  --surface: #141414;
+  --card: #1a1a1a;
+  --border: rgba(255,255,255,.06);
+  --purple: #7c3aed;
+  --gold: #d69e2e;
+  --white: #ffffff;
+  --muted: #a0a0a0;
+  --light: #d4d4d4;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--dark);
+  color: var(--white);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--purple); text-decoration: none; }
+a:hover { color: var(--gold); }
+img { display: block; max-width: 100%; }
+
+/* ---- Layout ---- */
+.wrap { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+
+/* ---- Top Bar / AI Badge ---- */
+.topbar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+  padding: 10px 0;
+  font-size: .88rem;
+  color: var(--muted);
+  letter-spacing: .3px;
+}
+.topbar strong { color: var(--gold); }
+
+/* ---- Hero ---- */
+.hero {
+  text-align: center;
+  padding: 100px 0 90px;
+  background: radial-gradient(ellipse at 50% 0%, rgba(124,58,237,.12) 0%, transparent 70%);
+}
+.hero h1 {
+  font-size: clamp(2.4rem, 5vw, 3.6rem);
+  font-weight: 800;
+  line-height: 1.12;
+  margin-bottom: 20px;
+  letter-spacing: -.02em;
+}
+.hero .sub {
+  font-size: 1.18rem;
+  color: var(--light);
+  max-width: 680px;
+  margin: 0 auto 18px;
+}
+.hero .ai-note {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: .95rem;
+  color: var(--gold);
+  font-style: italic;
+}
+
+/* ---- Sections ---- */
+.section { padding: 80px 0; }
+.section-alt { background: var(--surface); }
+.section h2 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 12px;
+}
+.section .lead {
+  text-align: center;
+  color: var(--muted);
+  font-size: 1.05rem;
+  max-width: 600px;
+  margin: 0 auto 40px;
+}
+
+/* ---- Grid ---- */
+.grid { display: grid; gap: 20px; }
+.grid-3 { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+.grid-4 { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+.grid-6 { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+
+/* ---- Cards ---- */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 28px 24px;
+  transition: transform .2s, box-shadow .2s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0,0,0,.35);
+}
+.card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 8px;
+  color: var(--purple);
+}
+.card p { color: var(--muted); font-size: .95rem; }
+
+/* ---- Team ---- */
+.member {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px 16px;
+  text-align: center;
+  transition: transform .2s;
+}
+.member:hover { transform: translateY(-4px); }
+.member svg { margin: 0 auto 10px; display: block; }
+.member .name { font-weight: 700; font-size: 1rem; display: block; }
+.member .role { font-size: .85rem; color: var(--muted); }
+
+/* ---- Testimonials ---- */
+.quote-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 28px 24px;
+}
+.quote-card p {
+  font-style: italic;
+  color: var(--light);
+  font-size: 1.05rem;
+  margin-bottom: 14px;
+  line-height: 1.6;
+}
+.quote-card .author { color: var(--purple); font-weight: 600; font-size: .92rem; }
+
+/* ---- Partners ---- */
+.partner-logo {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 70px;
+  padding: 12px;
+}
+.partner-logo span { color: var(--muted); font-weight: 600; font-size: .9rem; letter-spacing: .5px; }
+
+/* ---- About ---- */
+.about-flex {
+  display: flex;
+  gap: 48px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.about-flex .text { flex: 1; min-width: 280px; }
+.about-flex .text h2 { text-align: left; margin-bottom: 16px; }
+.about-flex .text p { color: var(--muted); font-size: 1.05rem; line-height: 1.7; }
+.about-flex .graphic { flex: 0 0 320px; text-align: center; }
+
+/* ---- Footer ---- */
+.footer {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 36px 0;
+  text-align: center;
+  color: var(--muted);
+  font-size: .9rem;
+}
+.footer .ai-credit { margin-top: 10px; font-size: .82rem; }
+.footer .ai-credit span { color: var(--purple); font-weight: 600; }
+
+/* ---- Responsive ---- */
+@media (max-width: 768px) {
+  .section { padding: 56px 0; }
+  .grid-3, .grid-4, .grid-6 { grid-template-columns: 1fr; }
+  .about-flex { flex-direction: column; }
+  .about-flex .graphic { flex: 0 0 auto; }
+}
+</style>
 </head>
 <body>
 
-    <header>
-        <div class="container">
-            <div class="ai-badge">🤖 AI-Powered by Mike McDonut</div>
-            <h1>Where Web3 Startups Get Discovered</h1>
-            <p>The brightest minds in Web3 use Syndika to find expertise, resources, and connections that can create high impact.</p>
-        </div>
-    </header>
+<!-- Top Bar -->
+<div class="topbar">🤖 <strong>AI-Powered by Mike McDonut</strong> — Syndika's AI assistant</div>
 
-    <section id="hero" class="hero">
-        <div class="container">
-            <div class="ai-badge-hero">Syndika is <span>Now enhanced with AI capabilities</span></div>
-            <h1>Where Web3 Startups Get Discovered</h1>
-            <p>The brightest minds in Web3 use Syndika to find expertise, resources, and connections that can create high impact.</p>
-        </div>
-    </section>
+<!-- Hero -->
+<section class="hero">
+<div class="wrap">
+  <h1>Where Web3 Startups<br>Get Discovered</h1>
+  <p class="sub">The brightest minds in Web3 use Syndika to find expertise, resources, and connections that can create high impact.</p>
+  <span class="ai-note">✨ Now enhanced with AI capabilities</span>
+</div>
+</section>
 
-    <section id="technology" class="section">
-        <div class="container">
-            <h2>Technology</h2>
-            <p>Comprehensive solutions from research to deployment.</p>
-            <div class="section-content">
-                <div class="item"><h3>Consulting/Research</h3><p>Expert guidance to navigate complex technological landscapes.</p></div>
-                <div class="item"><h3>Architecture</h3><p>Designing robust and scalable systems for the future.</p></div>
-                <div class="item"><h3>Web2/Mobile Dev</h3><p>Building high-performance applications for the current web.</p></div>
-                <div class="item"><h3>Web3/Smart Contract Dev</h3><p>Crafting secure and innovative decentralized applications.</p></div>
-                <div class="item"><h3>PM</h3><p>Streamlining project execution with expert management.</p></div>
-                <div class="item"><h3>DevOps</h3><p>Ensuring seamless integration, deployment, and operations.</p></div>
-                <div class="item"><h3>QA</h3><p>Rigorous testing for quality and reliability.</p></div>
-            </div>
-        </div>
-    </section>
+<!-- Technology -->
+<section class="section">
+<div class="wrap">
+  <h2>Technology</h2>
+  <p class="lead">End-to-end technical solutions from research to production.</p>
+  <div class="grid grid-3">
+    <div class="card"><h3>Consulting / Research</h3><p>Expert guidance to navigate complex technological landscapes and emerging paradigms.</p></div>
+    <div class="card"><h3>Architecture</h3><p>Designing robust, scalable systems built for the decentralized future.</p></div>
+    <div class="card"><h3>Web2 / Mobile Dev</h3><p>Building high-performance applications for today's web and mobile platforms.</p></div>
+    <div class="card"><h3>Web3 / Smart Contract Dev</h3><p>Crafting secure, audited decentralized applications and on-chain logic.</p></div>
+    <div class="card"><h3>Project Management</h3><p>Streamlining execution with structured, agile project leadership.</p></div>
+    <div class="card"><h3>DevOps</h3><p>Seamless CI/CD pipelines, infrastructure-as-code, and cloud operations.</p></div>
+    <div class="card"><h3>QA</h3><p>Rigorous automated and manual testing for quality and reliability.</p></div>
+  </div>
+</div>
+</section>
 
-    <section id="economics" class="section">
-        <div class="container">
-            <h2>Economics</h2>
-            <p>Driving value through strategic economic design and data science.</p>
-            <div class="section-content">
-                <div class="item"><h3>Holistic Consultancy</h3><p>Integrated strategies for sustainable growth.</p></div>
-                <div class="item"><h3>Economic Research</h3><p>In-depth analysis of market dynamics.</p></div>
-                <div class="item"><h3>Economic Modeling</h3><p>Predictive analytics for financial forecasting.</p></div>
-                <div class="item"><h3>Product Economics</h3><p>Optimizing value propositions and pricing strategies.</p></div>
-                <div class="item"><h3>Token Economics</h3><p>Designing robust tokenomics for blockchain projects.</p></div>
-                <div class="item"><h3>Data Science</h3><p>Unlocking insights from complex datasets.</p></div>
-                <div class="item"><h3>AI/ML</h3><p>Leveraging artificial intelligence and machine learning for innovation.</p></div>
-            </div>
-        </div>
-    </section>
+<!-- Economics -->
+<section class="section section-alt">
+<div class="wrap">
+  <h2>Economics</h2>
+  <p class="lead">Strategic economic design, data science, and AI-driven insights.</p>
+  <div class="grid grid-3">
+    <div class="card"><h3>Holistic Consultancy</h3><p>Integrated strategies for sustainable, long-term growth.</p></div>
+    <div class="card"><h3>Economic Research</h3><p>In-depth analysis of market dynamics and competitive landscapes.</p></div>
+    <div class="card"><h3>Economic Modeling</h3><p>Predictive analytics and simulation for financial forecasting.</p></div>
+    <div class="card"><h3>Product Economics</h3><p>Optimizing value propositions, pricing, and unit economics.</p></div>
+    <div class="card"><h3>Token Economics</h3><p>Designing robust, sustainable tokenomics for blockchain projects.</p></div>
+    <div class="card"><h3>Data Science</h3><p>Unlocking actionable insights from complex, high-volume datasets.</p></div>
+    <div class="card"><h3>AI / ML</h3><p>Leveraging artificial intelligence and machine learning for innovation.</p></div>
+  </div>
+</div>
+</section>
 
-    <section id="cyber-compliance" class="section">
-        <div class="container">
-            <h2>Cyber & Compliance</h2>
-            <p>Fortifying your digital assets with advanced security and regulatory adherence.</p>
-            <div class="section-content">
-                <div class="item"><h3>CISO on Demand</h3><p>Executive-level cybersecurity leadership.</p></div>
-                <div class="item"><h3>Assessment/Advisory</h3><p>Comprehensive risk evaluations and strategic advice.</p></div>
-                <div class="item"><h3>Managed Compliance/Defense</h3><p>Ongoing security operations and regulatory oversight.</p></div>
-                <div class="item"><h3>Threat Intelligence</h3><p>Proactive identification and mitigation of cyber threats.</p></div>
-                <div class="item"><h3>Incident Response</h3><p>Rapid and effective handling of security breaches.</p></div>
-            </div>
-        </div>
-    </section>
+<!-- Cyber & Compliance -->
+<section class="section">
+<div class="wrap">
+  <h2>Cyber &amp; Compliance</h2>
+  <p class="lead">Fortifying digital assets with advanced security and regulatory adherence.</p>
+  <div class="grid grid-3">
+    <div class="card"><h3>CISO on Demand</h3><p>Executive-level cybersecurity leadership, on your schedule.</p></div>
+    <div class="card"><h3>Assessment / Advisory</h3><p>Comprehensive risk evaluations and strategic security advice.</p></div>
+    <div class="card"><h3>Managed Compliance / Defense</h3><p>Ongoing security operations and regulatory oversight.</p></div>
+    <div class="card"><h3>Threat Intelligence</h3><p>Proactive identification and mitigation of emerging cyber threats.</p></div>
+    <div class="card"><h3>Incident Response</h3><p>Rapid, effective handling of security breaches and recovery.</p></div>
+  </div>
+</div>
+</section>
 
-    <section id="about" class="section about">
-        <div class="container" style="display:flex;gap:40px;align-items:center;flex-wrap:wrap;justify-content:space-between;">
-            <div class="content" style="flex:1;min-width:280px;text-align:left;">
-                <h2>Not Just Another Venture Studio</h2>
-                <p>We offer flexible access to strategic guidance from experienced members, blending innovation with proven execution. Build your Web3 vision with us.</p>
-            </div>
-            <div class="image" style="flex:1;min-width:280px;text-align:center;">
-                <!-- Inline SVG graphic -->
-                <svg width="320" height="180" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Syndika AI Studio">
-                    <rect width="320" height="180" rx="12" fill="#1a1a1a"/>
-                    <circle cx="160" cy="90" r="60" fill="rgba(107,70,193,0.25)" />
-                    <text x="160" y="95" text-anchor="middle" fill="#e2e8f0" font-family="Arial" font-size="20" font-weight="bold">Syndika AI Studio</text>
-                </svg>
-            </div>
-        </div>
-    </section>
+<!-- About -->
+<section class="section section-alt">
+<div class="wrap">
+  <div class="about-flex">
+    <div class="text">
+      <h2>Not Just Another Venture Studio</h2>
+      <p>We offer flexible access to strategic guidance from experienced members, blending innovation with proven execution. Syndika connects Web3 startups with the expertise they need — from token design to security audits, from economic modeling to full-stack development. Build your Web3 vision with us.</p>
+    </div>
+    <div class="graphic">
+      <svg width="300" height="180" viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Syndika AI Studio">
+        <rect width="300" height="180" rx="14" fill="#1a1a1a"/>
+        <circle cx="150" cy="80" r="50" fill="rgba(124,58,237,.18)"/>
+        <circle cx="150" cy="80" r="24" fill="rgba(214,158,46,.25)"/>
+        <text x="150" y="150" text-anchor="middle" fill="#a0a0a0" font-family="system-ui" font-size="15" font-weight="700">SYNDIKA</text>
+      </svg>
+    </div>
+  </div>
+</div>
+</section>
 
-    <section id="team" class="section team">
-        <div class="container">
-            <h2>Team Members</h2>
-            <p>Meet the minds shaping the future of Web3.</p>
-            <div class="section-content">
-                <div class="member">
-                    <svg class="avatar" viewBox="0 0 100 100" width="72" height="72" aria-label="Tzahi Kanza" role="img">
-                        <circle cx="50" cy="40" r="28" fill="#6b46c1"/>
-                        <rect x="14" y="60" width="72" height="28" rx="6" fill="#6b46c1" opacity="0.9"/>
-                        <text x="50" y="78" text-anchor="middle" fill="#fff" font-size="12" font-family="Arial">TK</text>
-                    </svg>
-                    <span class="name">Tzahi Kanza</span>
-                    <span class="title">CEO</span>
-                </div>
-                <div class="member">
-                    <svg class="avatar" viewBox="0 0 100 100" width="72" height="72" aria-label="Alex Cucer" role="img">
-                        <circle cx="50" cy="40" r="28" fill="#d69e2e"/>
-                        <rect x="14" y="60" width="72" height="28" rx="6" fill="#d69e2e" opacity="0.9"/>
-                        <text x="50" y="78" text-anchor="middle" fill="#fff" font-size="12" font-family="Arial">AC</text>
-                    </svg>
-                    <span class="name">Alex Cucer</span>
-                    <span class="title">CTO</span>
-                </div>
-                <div class="member">
-                    <svg class="avatar" viewBox="0 0 100 100" width="72" height="72" aria-label="Eitan Katz" role="img">
-                        <circle cx="50" cy="40" r="28" fill="#5a67d8"/>
-                        <rect x="14" y="60" width="72" height="28" rx="6" fill="#5a67d8" opacity="0.9"/>
-                        <text x="50" y="78" text-anchor="middle" fill="#fff" font-size="12" font-family="Arial">EK</text>
-                    </svg>
-                    <span class="name">Eitan Katz</span>
-                    <span class="title"></span>
-                </div>
-                <div class="member">
-                    <svg class="avatar" viewBox="0 0 100 100" width="72" height="72" aria-label="Julian Kwan" role="img">
-                        <circle cx="50" cy="40" r="28" fill="#38a169"/>
-                        <rect x="14" y="60" width="72" height="28" rx="6" fill="#38a169" opacity="0.9"/>
-                        <text x="50" y="78" text-anchor="middle" fill="#fff" font-size="12" font-family="Arial">JK</text>
-                    </svg>
-                    <span class="name">Julian Kwan</span>
-                    <span class="title"></span>
-                </div>
-                <div class="member">
-                    <svg class="avatar" viewBox="0 0 100 100" width="72" height="72" aria-label="Stefano Tresca" role="img">
-                        <circle cx="50" cy="40" r="28" fill="#dd6b20"/>
-                        <rect x="14" y="60" width="72" height="28" rx="6" fill="#dd6b20" opacity="0.9"/>
-                        <text x="50" y="78" text-anchor="middle" fill="#fff" font-size="12" font-family="Arial">ST</text>
-                    </svg>
-                    <span class="name">Stefano Tresca</span>
-                    <span class="title"></span>
-                </div>
-                <div class="member">
-                    <svg class="avatar" viewBox="0 0 100 100" width="72" height="72" aria-label="Ioana Surpateanu" role="img">
-                        <circle cx="50" cy="40" r="28" fill="#48bb78"/>
-                        <rect x="14" y="60" width="72" height="28" rx="6" fill="#48bb78" opacity="0.9"/>
-                        <text x="50" y="78" text-anchor="middle" fill="#fff" font-size="12" font-family="Arial">IS</text>
-                    </svg>
-                    <span class="name">Ioana Surpateanu</span>
-                    <span class="title"></span>
-                </div>
-                <div class="member">
-                    <svg class="avatar" viewBox="0 0 100 100" width="72" height="72" aria-label="Gauthier Vila" role="img">
-                        <circle cx="50" cy="40" r="28" fill="#ed8936"/>
-                        <rect x="14" y="60" width="72" height="28" rx="6" fill="#ed8936" opacity="0.9"/>
-                        <text x="50" y="78" text-anchor="middle" fill="#fff" font-size="12" font-family="Arial">GV</text>
-                    </svg>
-                    <span class="name">Gauthier Vila</span>
-                    <span class="title"></span>
-                </div>
-                <div class="member">
-                    <svg class="avatar" viewBox="0 0 100 100" width="72" height="72" aria-label="Leon Stern" role="img">
-                        <circle cx="50" cy="40" r="28" fill="#805ad5"/>
-                        <rect x="14" y="60" width="72" height="28" rx="6" fill="#805ad5" opacity="0.9"/>
-                        <text x="50" y="78" text-anchor="middle" fill="#fff" font-size="12" font-family="Arial">LS</text>
-                    </svg>
-                    <span class="name">Leon Stern</span>
-                    <span class="title"></span>
-                </div>
-                <div class="member">
-                    <svg class="avatar" viewBox="0 0 100 100" width="72" height="72" aria-label="Chris James Murphy" role="img">
-                        <circle cx="50" cy="40" r="28" fill="#f6ad55"/>
-                        <rect x="14" y="60" width="72" height="28" rx="6" fill="#f6ad55" opacity="0.9"/>
-                        <text x="50" y="78" text-anchor="middle" fill="#fff" font-size="12" font-family="Arial">JM</text>
-                    </svg>
-                    <span class="name">Chris James Murphy</span>
-                    <span class="title"></span>
-                </div>
-                <div class="member">
-                    <svg class="avatar" viewBox="0 0 100 100" width="72" height="72" aria-label="Sean Kiernan" role="img">
-                        <circle cx="50" cy="40" r="28" fill="#4299e1"/>
-                        <rect x="14" y="60" width="72" height="28" rx="6" fill="#4299e1" opacity="0.9"/>
-                        <text x="50" y="78" text-anchor="middle" fill="#fff" font-size="12" font-family="Arial">SK</text>
-                    </svg>
-                    <span class="name">Sean Kiernan</span>
-                    <span class="title"></span>
-                </div>
-                <div class="member">
-                    <svg class="avatar" viewBox="0 0 100 100" width="72" height="72" aria-label="Lorenzo Coni" role="img">
-                        <circle cx="50" cy="40" r="28" fill="#9f7aea"/>
-                        <rect x="14" y="60" width="72" height="28" rx="6" fill="#9f7aea" opacity="0.9"/>
-                        <text x="50" y="78" text-anchor="middle" fill="#fff" font-size="12" font-family="Arial">LC</text>
-                    </svg>
-                    <span class="name">Lorenzo Coni</span>
-                    <span class="title"></span>
-                </div>
-                <div class="member">
-                    <svg class="avatar" viewBox="0 0 100 100" width="72" height="72" aria-label="Poorya Shafiei" role="img">
-                        <circle cx="50" cy="40" r="28" fill="#3182ce"/>
-                        <rect x="14" y="60" width="72" height="28" rx="6" fill="#3182ce" opacity="0.9"/>
-                        <text x="50" y="78" text-anchor="middle" fill="#fff" font-size="12" font-family="Arial">PS</text>
-                    </svg>
-                    <span class="name">Poorya Shafiei</span>
-                    <span class="title"></span>
-                </div>
-            </div>
-        </div>
-    </section>
+<!-- Team -->
+<section class="section">
+<div class="wrap">
+  <h2>Team</h2>
+  <p class="lead">The minds shaping the future of Web3.</p>
+  <div class="grid grid-6">
 
-    <section id="testimonials" class="section testimonials">
-        <div class="container">
-            <h2>Testimonials</h2>
-            <p>What our clients say about their experience.</p>
-            <div class="section-content">
-                <div class="item">
-                    <p>"Syndika provided invaluable insights and execution for our Web3 project. Their team's expertise is second to none."</p>
-                    <span class="author">— Startup Founder</span>
-                </div>
-                <div class="item">
-                    <p>"The flexibility and strategic guidance from Syndika allowed us to pivot and scale effectively. Highly recommended for any ambitious venture."</p>
-                    <span class="author">— Tech Innovator</span>
-                </div>
-                <div class="item">
-                    <p>"From tokenomics to smart contract security, Syndika's team delivered exceptional results, significantly boosting our project's potential."</p>
-                    <span class="author">— Blockchain Lead</span>
-                </div>
-            </div>
-        </div>
-    </section>
+    <div class="member">
+      <svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><circle cx="32" cy="32" r="32" fill="#7c3aed"/><text x="32" y="37" text-anchor="middle" fill="#fff" font-family="system-ui" font-size="18" font-weight="700">TK</text></svg>
+      <span class="name">Tzahi Kanza</span><span class="role">CEO</span>
+    </div>
 
-    <section id="partners" class="section partners">
-        <div class="container">
-            <h2>Partners</h2>
-            <p>Collaborating with industry leaders to drive innovation.</p>
-            <div class="section-content" aria-label="Partners logos">
-                <div class="partner">
-                    <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Partner A logo">
-                        <rect width="120" height="60" rx="8" fill="#cccccc"></rect>
-                        <text x="60" y="35" text-anchor="middle" fill="#333" font-family="Arial" font-size="14">Partner A</text>
-                    </svg>
-                </div>
-                <div class="partner">
-                    <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Partner B logo">
-                        <rect width="120" height="60" rx="8" fill="#cccccc"></rect>
-                        <text x="60" y="35" text-anchor="middle" fill="#333" font-family="Arial" font-size="14">Partner B</text>
-                    </svg>
-                </div>
-                <div class="partner">
-                    <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Partner C logo">
-                        <rect width="120" height="60" rx="8" fill="#cccccc"></rect>
-                        <text x="60" y="35" text-anchor="middle" fill="#333" font-family="Arial" font-size="14">Partner C</text>
-                    </svg>
-                </div>
-                <div class="partner">
-                    <svg width="120" height="60" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Partner D logo">
-                        <rect width="120" height="60" rx="8" fill="#cccccc"></rect>
-                        <text x="60" y="35" text-anchor="middle" fill="#333" font-family="Arial" font-size="14">Partner D</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-    </section>
+    <div class="member">
+      <svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><circle cx="32" cy="32" r="32" fill="#d69e2e"/><text x="32" y="37" text-anchor="middle" fill="#fff" font-family="system-ui" font-size="18" font-weight="700">AC</text></svg>
+      <span class="name">Alex Cucer</span><span class="role">CTO</span>
+    </div>
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2026 Syndika. All rights reserved.</p>
-            <div class="footer-credit">This page was crafted by AI Mike — <span>Syndika's AI-powered assistant</span></div>
-        </div>
-    </footer>
+    <div class="member">
+      <svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><circle cx="32" cy="32" r="32" fill="#5a67d8"/><text x="32" y="37" text-anchor="middle" fill="#fff" font-family="system-ui" font-size="18" font-weight="700">EK</text></svg>
+      <span class="name">Eitan Katz</span><span class="role"></span>
+    </div>
+
+    <div class="member">
+      <svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><circle cx="32" cy="32" r="32" fill="#38a169"/><text x="32" y="37" text-anchor="middle" fill="#fff" font-family="system-ui" font-size="18" font-weight="700">JK</text></svg>
+      <span class="name">Julian Kwan</span><span class="role"></span>
+    </div>
+
+    <div class="member">
+      <svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><circle cx="32" cy="32" r="32" fill="#dd6b20"/><text x="32" y="37" text-anchor="middle" fill="#fff" font-family="system-ui" font-size="18" font-weight="700">ST</text></svg>
+      <span class="name">Stefano Tresca</span><span class="role"></span>
+    </div>
+
+    <div class="member">
+      <svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><circle cx="32" cy="32" r="32" fill="#48bb78"/><text x="32" y="37" text-anchor="middle" fill="#fff" font-family="system-ui" font-size="18" font-weight="700">IS</text></svg>
+      <span class="name">Ioana Surpateanu</span><span class="role"></span>
+    </div>
+
+    <div class="member">
+      <svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><circle cx="32" cy="32" r="32" fill="#ed8936"/><text x="32" y="37" text-anchor="middle" fill="#fff" font-family="system-ui" font-size="18" font-weight="700">GV</text></svg>
+      <span class="name">Gauthier Vila</span><span class="role"></span>
+    </div>
+
+    <div class="member">
+      <svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><circle cx="32" cy="32" r="32" fill="#805ad5"/><text x="32" y="37" text-anchor="middle" fill="#fff" font-family="system-ui" font-size="18" font-weight="700">LS</text></svg>
+      <span class="name">Leon Stern</span><span class="role"></span>
+    </div>
+
+    <div class="member">
+      <svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><circle cx="32" cy="32" r="32" fill="#f6ad55"/><text x="32" y="37" text-anchor="middle" fill="#fff" font-family="system-ui" font-size="18" font-weight="700">CM</text></svg>
+      <span class="name">Chris James Murphy</span><span class="role"></span>
+    </div>
+
+    <div class="member">
+      <svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><circle cx="32" cy="32" r="32" fill="#4299e1"/><text x="32" y="37" text-anchor="middle" fill="#fff" font-family="system-ui" font-size="18" font-weight="700">SK</text></svg>
+      <span class="name">Sean Kiernan</span><span class="role"></span>
+    </div>
+
+    <div class="member">
+      <svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><circle cx="32" cy="32" r="32" fill="#9f7aea"/><text x="32" y="37" text-anchor="middle" fill="#fff" font-family="system-ui" font-size="18" font-weight="700">LC</text></svg>
+      <span class="name">Lorenzo Coni</span><span class="role"></span>
+    </div>
+
+    <div class="member">
+      <svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><circle cx="32" cy="32" r="32" fill="#3182ce"/><text x="32" y="37" text-anchor="middle" fill="#fff" font-family="system-ui" font-size="18" font-weight="700">PS</text></svg>
+      <span class="name">Poorya Shafiei</span><span class="role"></span>
+    </div>
+
+  </div>
+</div>
+</section>
+
+<!-- Testimonials -->
+<section class="section section-alt">
+<div class="wrap">
+  <h2>Testimonials</h2>
+  <p class="lead">What our partners and clients say.</p>
+  <div class="grid grid-3">
+    <div class="quote-card">
+      <p>&ldquo;Syndika provided invaluable insights and execution for our Web3 project. Their team&rsquo;s expertise is second to none.&rdquo;</p>
+      <span class="author">&mdash; Startup Founder</span>
+    </div>
+    <div class="quote-card">
+      <p>&ldquo;The flexibility and strategic guidance from Syndika allowed us to pivot and scale effectively. Highly recommended.&rdquo;</p>
+      <span class="author">&mdash; Tech Innovator</span>
+    </div>
+    <div class="quote-card">
+      <p>&ldquo;From tokenomics to smart contract security, Syndika&rsquo;s team delivered exceptional results across the board.&rdquo;</p>
+      <span class="author">&mdash; Blockchain Lead</span>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- Partners -->
+<section class="section">
+<div class="wrap">
+  <h2>Partners</h2>
+  <p class="lead">Collaborating with industry leaders to drive innovation.</p>
+  <div class="grid grid-4">
+    <div class="partner-logo"><span>Partner A</span></div>
+    <div class="partner-logo"><span>Partner B</span></div>
+    <div class="partner-logo"><span>Partner C</span></div>
+    <div class="partner-logo"><span>Partner D</span></div>
+  </div>
+</div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+<div class="wrap">
+  <p>&copy; 2026 <a href="https://syndika.co" target="_blank" rel="noopener">Syndika</a>. All rights reserved.</p>
+  <p class="ai-credit">This page was crafted by <span>AI Mike</span> — Syndika's AI-powered assistant</p>
+</div>
+</footer>
 
 </body>
 </html>
