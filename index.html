@@ -4,426 +4,798 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Syndika — Where Web3 Startups Get Discovered</title>
+<meta name="description" content="Syndika connects Web3 startups with expertise, resources, and connections. Technology, Economics, Cyber & Compliance.">
+
+<!-- Open Graph -->
+<meta property="og:title" content="Syndika — Where Web3 Startups Get Discovered">
+<meta property="og:description" content="The brightest minds in Web3 use Syndika to find expertise, resources, and connections that create high impact.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://syndika.co/">
+
 <style>
 :root {
   --dark: #0a0a0a;
   --surface: #141414;
   --card: #1a1a1a;
-  --border: rgba(255,255,255,.06);
+  --border: rgba(255,255,255,.08);
   --purple: #7c3aed;
+  --purple-light: #9f67ff;
   --gold: #d69e2e;
+  --gold-light: #f0c040;
   --white: #ffffff;
   --muted: #a0a0a0;
   --light: #d4d4d4;
+  --font-main: 'Sora', system-ui, -apple-system, sans-serif;
 }
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 body {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: var(--font-main);
   background: var(--dark);
   color: var(--white);
-  line-height: 1.65;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
-a { color: var(--purple); text-decoration: none; }
-a:hover { color: var(--gold); }
-img { display: block; max-width: 100%; }
+a { color: var(--purple-light); text-decoration: none; transition: color .2s; }
+a:hover { color: var(--gold-light); }
+img { display: block; max-width: 100%; height: auto; }
 
 /* ---- Layout ---- */
-.wrap { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+.wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
 
-/* ---- Top Bar / AI Badge ---- */
+/* ---- Top Bar ---- */
 .topbar {
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
+  background: linear-gradient(90deg, var(--purple) 0%, #5b21b6 100%);
+  padding: 12px 0;
   text-align: center;
-  padding: 10px 0;
-  font-size: .88rem;
-  color: var(--muted);
-  letter-spacing: .3px;
+  font-size: .9rem;
 }
-.topbar strong { color: var(--gold); }
+.topbar a { color: var(--white); font-weight: 600; }
+.topbar a:hover { color: var(--gold); }
+
+/* ---- Nav ---- */
+.nav {
+  background: rgba(10,10,10,.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 16px 0;
+}
+.nav-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.nav-logo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--white);
+  letter-spacing: -.02em;
+}
+.nav-logo span { color: var(--purple-light); }
+.nav-links { display: flex; gap: 32px; list-style: none; }
+.nav-links a {
+  color: var(--light);
+  font-size: .95rem;
+  font-weight: 500;
+}
+.nav-links a:hover { color: var(--white); }
+.nav-cta {
+  background: var(--purple);
+  color: var(--white) !important;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+.nav-cta:hover { background: var(--purple-light); }
 
 /* ---- Hero ---- */
 .hero {
   text-align: center;
-  padding: 100px 0 90px;
-  background: radial-gradient(ellipse at 50% 0%, rgba(124,58,237,.12) 0%, transparent 70%);
+  padding: 100px 0 120px;
+  background: 
+    radial-gradient(ellipse at 30% 20%, rgba(124,58,237,.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 80%, rgba(214,158,46,.1) 0%, transparent 50%),
+    var(--dark);
   position: relative;
   overflow: hidden;
 }
-/* Animated mesh background */
 .hero::before {
-  content: '';
-  position: absolute;
-  top: -50%; left: -50%; width: 200%; height: 200%;
-  background: 
-    radial-gradient(ellipse at 20% 20%, rgba(124,58,237,.08) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 80%, rgba(214,158,46,.06) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 50%, rgba(124,58,237,.04) 0%, transparent 60%);
-  animation: meshMove 20s ease-in-out infinite;
-  z-index: -1;
-}
-@keyframes meshMove {
-  0%, 100% { transform: translate(0, 0) rotate(0deg); }
-  25% { transform: translate(2%, 2%) rotate(1deg); }
-  50% { transform: translate(-1%, 3%) rotate(-1deg); }
-  75% { transform: translate(3%, -2%) rotate(2deg); }
-}
-/* Floating particles */
-.hero::after {
   content: '';
   position: absolute;
   top: 0; left: 0; width: 100%; height: 100%;
   background-image: 
-    radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,.15) 50%, transparent 50%),
-    radial-gradient(2px 2px at 40% 70%, rgba(255,255,255,.1) 50%, transparent 50%),
-    radial-gradient(3px 3px at 60% 20%, rgba(255,255,255,.12) 50%, transparent 50%),
-    radial-gradient(2px 2px at 80% 60%, rgba(255,255,255,.08) 50%, transparent 50%),
-    radial-gradient(2px 2px at 10% 80%, rgba(255,255,255,.1) 50%, transparent 50%),
-    radial-gradient(2px 2px at 90% 40%, rgba(255,255,255,.11) 50%, transparent 50%);
-  animation: floatParticles 15s ease-in-out infinite;
-  z-index: -1;
+    radial-gradient(2px 2px at 15% 25%, rgba(255,255,255,.12) 50%, transparent 50%),
+    radial-gradient(2px 2px at 35% 65%, rgba(255,255,255,.08) 50%, transparent 50%),
+    radial-gradient(3px 3px at 55% 15%, rgba(255,255,255,.1) 50%, transparent 50%),
+    radial-gradient(2px 2px at 75% 55%, rgba(255,255,255,.09) 50%, transparent 50%),
+    radial-gradient(2px 2px at 85% 35%, rgba(255,255,255,.11) 50%, transparent 50%),
+    radial-gradient(2px 2px at 25% 85%, rgba(255,255,255,.07) 50%, transparent 50%);
+  animation: float 18s ease-in-out infinite;
 }
-@keyframes floatParticles {
-  0%, 100% { transform: translateY(0) scale(1); opacity: 0.6; }
-  50% { transform: translateY(-20px) scale(1.05); opacity: 1; }
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
 }
+.hero-content { position: relative; z-index: 1; }
 .hero h1 {
-  font-size: clamp(2.4rem, 5vw, 3.6rem);
+  font-size: clamp(2.5rem, 6vw, 4rem);
   font-weight: 800;
-  line-height: 1.12;
-  margin-bottom: 20px;
-  letter-spacing: -.02em;
+  line-height: 1.1;
+  margin-bottom: 24px;
+  letter-spacing: -.03em;
+}
+.hero h1 span {
+  background: linear-gradient(135deg, var(--purple-light), var(--gold-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 .hero .sub {
-  font-size: 1.18rem;
-  color: var(--light);
-  max-width: 680px;
-  margin: 0 auto 18px;
+  font-size: 1.25rem;
+  color: var(--muted);
+  max-width: 640px;
+  margin: 0 auto 32px;
 }
-.hero .ai-note {
+.hero-btns {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.btn {
   display: inline-block;
-  margin-top: 10px;
-  font-size: .95rem;
-  color: var(--gold);
-  font-style: italic;
+  padding: 14px 32px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all .25s;
+}
+.btn-primary {
+  background: var(--purple);
+  color: var(--white);
+}
+.btn-primary:hover {
+  background: var(--purple-light);
+  transform: translateY(-2px);
+}
+.btn-secondary {
+  background: transparent;
+  border: 2px solid var(--border);
+  color: var(--light);
+}
+.btn-secondary:hover {
+  border-color: var(--purple);
+  color: var(--white);
+}
+.ai-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 24px;
+  padding: 8px 16px;
+  background: rgba(124,58,237,.15);
+  border: 1px solid rgba(124,58,237,.3);
+  border-radius: 50px;
+  font-size: .85rem;
+  color: var(--purple-light);
 }
 
-/* ---- Sections ---- */
-.section { padding: 80px 0; }
+/* ---- Section ---- */
+.section { padding: 90px 0; }
 .section-alt { background: var(--surface); }
 .section h2 {
-  font-size: 2.2rem;
+  font-size: 2.5rem;
   font-weight: 700;
   text-align: center;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
+  letter-spacing: -.02em;
 }
 .section .lead {
   text-align: center;
   color: var(--muted);
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   max-width: 600px;
-  margin: 0 auto 40px;
+  margin: 0 auto 50px;
 }
 
-/* ---- Grid ---- */
-.grid { display: grid; gap: 20px; }
-.grid-3 { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
-.grid-4 { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
-.grid-6 { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+/* ---- Cards Grid ---- */
+.grid { display: grid; gap: 24px; }
+.grid-3 { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
+.grid-4 { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
 
-/* ---- Cards ---- */
 .card {
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 28px 24px;
-  transition: transform .2s, box-shadow .2s;
+  border-radius: 16px;
+  padding: 32px 28px;
+  transition: all .3s;
 }
 .card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 32px rgba(0,0,0,.35);
+  transform: translateY(-6px);
+  border-color: var(--purple);
+  box-shadow: 0 20px 40px rgba(0,0,0,.3);
 }
-.card h3 {
-  font-size: 1.15rem;
-  margin-bottom: 8px;
-  color: var(--purple);
-}
-.card p { color: var(--muted); font-size: .95rem; }
-
-/* ---- Team ---- */
-.member {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 24px 16px;
-  text-align: center;
-  transition: transform .2s;
-}
-.member:hover { transform: translateY(-4px); }
-.member svg { margin: 0 auto 10px; display: block; }
-.member .name { font-weight: 700; font-size: 1rem; display: block; }
-.member .role { font-size: .85rem; color: var(--muted); }
-
-/* ---- Testimonials ---- */
-.quote-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 28px 24px;
-}
-.quote-card p {
-  font-style: italic;
-  color: var(--light);
-  font-size: 1.05rem;
-  margin-bottom: 14px;
-  line-height: 1.6;
-}
-.quote-card .author { color: var(--purple); font-weight: 600; font-size: .92rem; }
-
-/* ---- Partners ---- */
-.partner-logo {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 10px;
+.card-icon {
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, var(--purple), #5b21b6);
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 70px;
-  padding: 12px;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
 }
-.partner-logo span { color: var(--muted); font-weight: 600; font-size: .9rem; letter-spacing: .5px; }
+.card h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: var(--white);
+}
+.card p { color: var(--muted); font-size: .95rem; }
 
 /* ---- About ---- */
-.about-flex {
-  display: flex;
-  gap: 48px;
+.about {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
   align-items: center;
-  flex-wrap: wrap;
 }
-.about-flex .text { flex: 1; min-width: 280px; }
-.about-flex .text h2 { text-align: left; margin-bottom: 16px; }
-.about-flex .text p { color: var(--muted); font-size: 1.05rem; line-height: 1.7; }
-.about-flex .graphic { flex: 0 0 320px; text-align: center; }
+.about-text h2 {
+  text-align: left;
+  font-size: 2.2rem;
+  margin-bottom: 20px;
+}
+.about-text p {
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.8;
+  margin-bottom: 16px;
+}
+.about-visual {
+  position: relative;
+}
+.about-visual svg {
+  width: 100%;
+  border-radius: 20px;
+}
+
+/* ---- Team ---- */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 20px;
+}
+.team-member {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  text-align: center;
+  transition: all .3s;
+}
+.team-member:hover {
+  transform: translateY(-4px);
+  border-color: var(--purple);
+}
+.team-member img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 14px;
+  border: 3px solid var(--purple);
+}
+.team-member .name {
+  font-weight: 700;
+  font-size: .95rem;
+  display: block;
+  margin-bottom: 4px;
+}
+.team-member .role {
+  font-size: .8rem;
+  color: var(--muted);
+  display: block;
+  line-height: 1.4;
+}
+
+/* ---- Testimonials ---- */
+.testi-grid { grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); }
+.testi-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 32px;
+}
+.testi-card p {
+  font-style: italic;
+  color: var(--light);
+  font-size: 1rem;
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+.testi-card .author {
+  color: var(--purple-light);
+  font-weight: 600;
+  font-size: .9rem;
+}
+
+/* ---- Partners ---- */
+.partner-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 20px;
+}
+.partner-logo {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+  padding: 16px;
+  transition: all .3s;
+}
+.partner-logo:hover {
+  border-color: var(--purple);
+  transform: scale(1.03);
+}
+.partner-logo img {
+  max-height: 50px;
+  width: auto;
+}
+.partner-logo span {
+  color: var(--muted);
+  font-weight: 600;
+  font-size: .85rem;
+}
+
+/* ---- The Syndicate ---- */
+.syndicate {
+  background: linear-gradient(180deg, var(--dark) 0%, var(--surface) 100%);
+  text-align: center;
+  padding: 100px 0;
+}
+.syndicate h2 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+.syndicate .lead {
+  max-width: 700px;
+  margin: 0 auto 50px;
+}
+.syndicate-badge {
+  display: inline-block;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 50px;
+  padding: 16px 40px;
+  font-size: 1.1rem;
+  color: var(--light);
+}
+.syndicate-badge strong {
+  color: var(--purple-light);
+}
 
 /* ---- Footer ---- */
 .footer {
   background: var(--surface);
   border-top: 1px solid var(--border);
-  padding: 36px 0;
+  padding: 50px 0 30px;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 40px;
+}
+.footer-brand {
+  font-size: 1.4rem;
+  font-weight: 800;
+  margin-bottom: 16px;
+}
+.footer-brand span { color: var(--purple-light); }
+.footer-desc {
+  color: var(--muted);
+  font-size: .95rem;
+  line-height: 1.7;
+}
+.footer h4 {
+  font-size: .9rem;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+.footer-links {
+  list-style: none;
+}
+.footer-links li { margin-bottom: 10px; }
+.footer-links a { color: var(--light); font-size: .95rem; }
+.footer-links a:hover { color: var(--white); }
+.footer-bottom {
+  border-top: 1px solid var(--border);
+  padding-top: 24px;
   text-align: center;
   color: var(--muted);
   font-size: .9rem;
 }
-.footer .ai-credit { margin-top: 10px; font-size: .82rem; }
-.footer .ai-credit span { color: var(--purple); font-weight: 600; }
+.footer-ai {
+  margin-top: 12px;
+  font-size: .85rem;
+}
+.footer-ai span { color: var(--purple-light); font-weight: 600; }
 
 /* ---- Responsive ---- */
-@media (max-width: 768px) {
-  .section { padding: 56px 0; }
-  .grid-3, .grid-4, .grid-6 { grid-template-columns: 1fr; }
-  .about-flex { flex-direction: column; }
-  .about-flex .graphic { flex: 0 0 auto; }
+@media (max-width: 900px) {
+  .about { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+  .nav-links { display: none; }
+  .section { padding: 60px 0; }
+  .hero { padding: 60px 0 80px; }
+  .footer-grid { grid-template-columns: 1fr; }
 }
 </style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
 <!-- Top Bar -->
-<div class="topbar">🤖 <strong>AI-Powered by Mike McDonut</strong> — Syndika's AI assistant</div>
+<div class="topbar">
+  🤖 <strong>AI-Powered by Mike McDonut</strong> — <a href="https://syndika.co/contact-us/">Get in Touch</a>
+</div>
+
+<!-- Nav -->
+<nav class="nav">
+  <div class="wrap nav-inner">
+    <a href="/" class="nav-logo">SYNDIKA<span>.</span></a>
+    <ul class="nav-links">
+      <li><a href="#technology">Technology</a></li>
+      <li><a href="#economics">Economics</a></li>
+      <li><a href="#cyber">Cyber</a></li>
+      <li><a href="#syndicate">The Syndicate</a></li>
+      <li><a href="#team">Team</a></li>
+      <li><a href="#partners">Partners</a></li>
+      <li><a href="https://syndika.co/contact-us/" class="nav-cta">Contact</a></li>
+    </ul>
+  </div>
+</nav>
 
 <!-- Hero -->
 <section class="hero">
-<div class="wrap">
-  <h1>Where Web3 Startups<br>Get Discovered</h1>
-  <p class="sub">The brightest minds in Web3 use Syndika to find expertise, resources, and connections that can create high impact.</p>
-  <span class="ai-note">✨ Now enhanced with AI capabilities</span>
-</div>
+  <div class="wrap hero-content">
+    <h1>Where Web3 Startups<br><span>Get Discovered</span></h1>
+    <p class="sub">The brightest minds in Web3 use Syndika to find expertise, resources, and connections that create high impact.</p>
+    <div class="hero-btns">
+      <a href="https://syndika.co/venture-studio/" class="btn btn-primary">Explore Syndika</a>
+      <a href="#technology" class="btn btn-secondary">Our Services</a>
+    </div>
+    <div class="ai-badge">
+      ✨ Now enhanced with AI capabilities — Powered by Mike McDonut
+    </div>
+  </div>
 </section>
 
 <!-- Technology -->
-<section class="section">
-<div class="wrap">
-  <h2>Technology</h2>
-  <p class="lead">End-to-end technical solutions from research to production.</p>
-  <div class="grid grid-3">
-    <div class="card"><h3>Consulting / Research</h3><p>Expert guidance to navigate complex technological landscapes and emerging paradigms.</p></div>
-    <div class="card"><h3>Architecture</h3><p>Designing robust, scalable systems built for the decentralized future.</p></div>
-    <div class="card"><h3>Web2 / Mobile Dev</h3><p>Building high-performance applications for today's web and mobile platforms.</p></div>
-    <div class="card"><h3>Web3 / Smart Contract Dev</h3><p>Crafting secure, audited decentralized applications and on-chain logic.</p></div>
-    <div class="card"><h3>Project Management</h3><p>Streamlining execution with structured, agile project leadership.</p></div>
-    <div class="card"><h3>DevOps</h3><p>Seamless CI/CD pipelines, infrastructure-as-code, and cloud operations.</p></div>
-    <div class="card"><h3>QA</h3><p>Rigorous automated and manual testing for quality and reliability.</p></div>
+<section id="technology" class="section">
+  <div class="wrap">
+    <h2>Technology</h2>
+    <p class="lead">End-to-end technical solutions from research to production.</p>
+    <div class="grid grid-3">
+      <div class="card">
+        <div class="card-icon">💡</div>
+        <h3>Consulting / Research</h3>
+        <p>Expert guidance to navigate complex technological landscapes and emerging paradigms.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🏗️</div>
+        <h3>Architecture</h3>
+        <p>Designing robust, scalable systems built for the decentralized future.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📱</div>
+        <h3>Web2 / Mobile Dev</h3>
+        <p>Building high-performance applications for today's web and mobile platforms.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">⛓️</div>
+        <h3>Web3 / Smart Contract Dev</h3>
+        <p>Crafting secure, audited decentralized applications and on-chain logic.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📊</div>
+        <h3>Project Management</h3>
+        <p>Streamlining execution with structured, agile project leadership.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">⚙️</div>
+        <h3>DevOps</h3>
+        <p>Seamless CI/CD pipelines, infrastructure-as-code, and cloud operations.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">✅</div>
+        <h3>QA</h3>
+        <p>Rigorous automated and manual testing for quality and reliability.</p>
+      </div>
+    </div>
   </div>
-</div>
 </section>
 
 <!-- Economics -->
-<section class="section section-alt">
-<div class="wrap">
-  <h2>Economics</h2>
-  <p class="lead">Strategic economic design, data science, and AI-driven insights.</p>
-  <div class="grid grid-3">
-    <div class="card"><h3>Holistic Consultancy</h3><p>Integrated strategies for sustainable, long-term growth.</p></div>
-    <div class="card"><h3>Economic Research</h3><p>In-depth analysis of market dynamics and competitive landscapes.</p></div>
-    <div class="card"><h3>Economic Modeling</h3><p>Predictive analytics and simulation for financial forecasting.</p></div>
-    <div class="card"><h3>Product Economics</h3><p>Optimizing value propositions, pricing, and unit economics.</p></div>
-    <div class="card"><h3>Token Economics</h3><p>Designing robust, sustainable tokenomics for blockchain projects.</p></div>
-    <div class="card"><h3>Data Science</h3><p>Unlocking actionable insights from complex, high-volume datasets.</p></div>
-    <div class="card"><h3>AI / ML</h3><p>Leveraging artificial intelligence and machine learning for innovation.</p></div>
+<section id="economics" class="section section-alt">
+  <div class="wrap">
+    <h2>Economics</h2>
+    <p class="lead">Strategic economic design, data science, and AI-driven insights.</p>
+    <div class="grid grid-3">
+      <div class="card">
+        <div class="card-icon">🌐</div>
+        <h3>Holistic Consultancy</h3>
+        <p>Integrated strategies for sustainable, long-term growth.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📈</div>
+        <h3>Economic Research</h3>
+        <p>In-depth analysis of market dynamics and competitive landscapes.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🧮</div>
+        <h3>Economic Modeling</h3>
+        <p>Predictive analytics and simulation for financial forecasting.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">💰</div>
+        <h3>Product Economics</h3>
+        <p>Optimizing value propositions, pricing, and unit economics.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🪙</div>
+        <h3>Token Economics</h3>
+        <p>Designing robust, sustainable tokenomics for blockchain projects.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔬</div>
+        <h3>Data Science</h3>
+        <p>Unlocking actionable insights from complex, high-volume datasets.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🤖</div>
+        <h3>AI / ML</h3>
+        <p>Leveraging artificial intelligence and machine learning for innovation.</p>
+      </div>
+    </div>
   </div>
-</div>
 </section>
 
 <!-- Cyber & Compliance -->
-<section class="section">
-<div class="wrap">
-  <h2>Cyber &amp; Compliance</h2>
-  <p class="lead">Fortifying digital assets with advanced security and regulatory adherence.</p>
-  <div class="grid grid-3">
-    <div class="card"><h3>CISO on Demand</h3><p>Executive-level cybersecurity leadership, on your schedule.</p></div>
-    <div class="card"><h3>Assessment / Advisory</h3><p>Comprehensive risk evaluations and strategic security advice.</p></div>
-    <div class="card"><h3>Managed Compliance / Defense</h3><p>Ongoing security operations and regulatory oversight.</p></div>
-    <div class="card"><h3>Threat Intelligence</h3><p>Proactive identification and mitigation of emerging cyber threats.</p></div>
-    <div class="card"><h3>Incident Response</h3><p>Rapid, effective handling of security breaches and recovery.</p></div>
+<section id="cyber" class="section">
+  <div class="wrap">
+    <h2>Cyber &amp; Compliance</h2>
+    <p class="lead">Fortifying digital assets with advanced security and regulatory adherence.</p>
+    <div class="grid grid-3">
+      <div class="card">
+        <div class="card-icon">🛡️</div>
+        <h3>CISO on Demand</h3>
+        <p>Executive-level cybersecurity leadership, on your schedule.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔍</div>
+        <h3>Assessment / Advisory</h3>
+        <p>Comprehensive risk evaluations and strategic security advice.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📋</div>
+        <h3>Managed Compliance</h3>
+        <p>Ongoing security operations and regulatory oversight.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎯</div>
+        <h3>Threat Intelligence</h3>
+        <p>Proactive identification and mitigation of emerging cyber threats.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🚨</div>
+        <h3>Incident Response</h3>
+        <p>Rapid, effective handling of security breaches and recovery.</p>
+      </div>
+    </div>
   </div>
-</div>
+</section>
+
+<!-- The Syndicate -->
+<section id="syndicate" class="syndicate">
+  <div class="wrap">
+    <h2>The Syndicate</h2>
+    <p class="lead">Our vibrant network offers know-how, networking, and experience in all aspects of building Web3.</p>
+    <div class="syndicate-badge">
+      We're all part of <strong>one hub</strong> where everyone knows everyone — to get your Web3 venture to the next level.
+    </div>
+  </div>
 </section>
 
 <!-- About -->
 <section class="section section-alt">
-<div class="wrap">
-  <div class="about-flex">
-    <div class="text">
-      <h2>Not Just Another Venture Studio</h2>
-      <p>We offer flexible access to strategic guidance from experienced members, blending innovation with proven execution. Syndika connects Web3 startups with the expertise they need — from token design to security audits, from economic modeling to full-stack development. Build your Web3 vision with us.</p>
-    </div>
-    <div class="graphic">
-      <svg width="300" height="180" viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Syndika AI Studio">
-        <rect width="300" height="180" rx="14" fill="#1a1a1a"/>
-        <circle cx="150" cy="80" r="50" fill="rgba(124,58,237,.18)"/>
-        <circle cx="150" cy="80" r="24" fill="rgba(214,158,46,.25)"/>
-        <text x="150" y="150" text-anchor="middle" fill="#a0a0a0" font-family="system-ui" font-size="15" font-weight="700">SYNDIKA</text>
-      </svg>
+  <div class="wrap">
+    <div class="about">
+      <div class="about-text">
+        <h2>Not Just Another Venture Studio</h2>
+        <p>Excitement and innovation are what drive Web3, but success requires more than a brilliant idea. At Syndika, builders get flexible access to strategic guidance from a network of experienced members who've walked this path before.</p>
+        <p>Plus world-class Web3 services in <strong>technology, economics, cybersecurity, and compliance</strong>. If accepted, you'll not only boost your project's success — you'll help build the future of Web3.</p>
+      </div>
+      <div class="about-visual">
+        <svg viewBox="0 0 500 350" xmlns="http://www.w3.org/2000/svg">
+          <rect width="500" height="350" rx="20" fill="#1a1a1a"/>
+          <circle cx="250" cy="150" r="80" fill="rgba(124,58,237,.2)"/>
+          <circle cx="250" cy="150" r="40" fill="rgba(214,158,46,.3)"/>
+          <text x="250" y="280" text-anchor="middle" fill="#a0a0a0" font-family="Sora, sans-serif" font-size="22" font-weight="700">SYNDIKA</text>
+          <text x="250" y="310" text-anchor="middle" fill="#7c3aed" font-family="Sora, sans-serif" font-size="14">Where Web3 Startups Get Discovered</text>
+        </svg>
+      </div>
     </div>
   </div>
-</div>
 </section>
 
 <!-- Team -->
-<section class="section">
-<div class="wrap">
-  <h2>Team</h2>
-  <p class="lead">The minds shaping the future of Web3.</p>
-  <div class="grid grid-6">
-
-    <div class="member">
-      <svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><circle cx="32" cy="32" r="32" fill="#7c3aed"/><text x="32" y="37" text-anchor="middle" fill="#fff" font-family="system-ui" font-size="18" font-weight="700">TK</text></svg>
-      <span class="name">Tzahi Kanza</span><span class="role">CEO of Syndika</span>
+<section id="team" class="section">
+  <div class="wrap">
+    <h2>The Team</h2>
+    <p class="lead">The minds shaping the future of Web3.</p>
+    <div class="team-grid">
+      <div class="team-member">
+        <img src="https://syndika.co/wp-content/webp-express/webp-images/uploads/2025/03/Property-1Tzahi.png.webp" alt="Tzahi Kanza" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22><circle cx=%2240%22 cy=%2240%22 r=%2240%22 fill=%22%237c3aed%22/><text x=%2240%22 y=%2245%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2220%22>TK</text></svg>'">
+        <span class="name">Tzahi Kanza</span>
+        <span class="role">CEO of Syndika</span>
+      </div>
+      <div class="team-member">
+        <img src="https://syndika.co/wp-content/webp-express/webp-images/uploads/2025/03/Property-1Cucer.png.webp" alt="Alex Cucer" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22><circle cx=%2240%22 cy=%2240%22 r=%2240%22 fill=%22%23d69e2e%22/><text x=%2240%22 y=%2245%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2220%22>AC</text></svg>'">
+        <span class="name">Alex Cucer</span>
+        <span class="role">CTO of Syndika</span>
+      </div>
+      <div class="team-member">
+        <img src="https://syndika.co/wp-content/webp-express/webp-images/uploads/2025/03/Property-1Eitan.png.webp" alt="Eitan Katz" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22><circle cx=%2240%22 cy=%2240%22 r=%2240%22 fill=%22%235b21b6%22/><text x=%2240%22 y=%2245%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2220%22>EK</text></svg>'">
+        <span class="name">Eitan Katz</span>
+        <span class="role">Co-Founder & CEO, Kima Network</span>
+      </div>
+      <div class="team-member">
+        <img src="https://syndika.co/wp-content/webp-express/webp-images/uploads/2025/03/Property-1Julian-Julian-Kwan.png.webp" alt="Julian Kwan" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22><circle cx=%2240%22 cy=%2240%22 r=%2240%22 fill=%22%2338a169%22/><text x=%2240%22 y=%2245%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2220%22>JK</text></svg>'">
+        <span class="name">Julian Kwan</span>
+        <span class="role">Co-Founder & CEO, IXS & InvestaX</span>
+      </div>
+      <div class="team-member">
+        <img src="https://syndika.co/wp-content/webp-express/webp-images/uploads/2025/03/Property-1Stefano.png.webp" alt="Stefano Tresca" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22><circle cx=%2240%22 cy=%2240%22 r=%2240%22 fill=%22%23dd6b20%22/><text x=%2240%22 y=%2245%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2220%22>ST</text></svg>'">
+        <span class="name">Stefano Tresca</span>
+        <span class="role">CEO, Sixth Society</span>
+      </div>
+      <div class="team-member">
+        <img src="https://syndika.co/wp-content/webp-express/webp-images/uploads/2025/03/Property-1Ioana.png.webp" alt="Ioana Surpateanu" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22><circle cx=%2240%22 cy=%2240%22 r=%2240%22 fill=%22%2348bb78%22/><text x=%2240%22 y=%2245%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2220%22>IS</text></svg>'">
+        <span class="name">Ioana Surpateanu</span>
+        <span class="role">CSO, Dreamer Labs</span>
+      </div>
+      <div class="team-member">
+        <img src="https://syndika.co/wp-content/webp-express/webp-images/uploads/2025/03/Property-1Gauthier.png.webp" alt="Gauthier Vila" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22><circle cx=%2240%22 cy=%2240%22 r=%2240%22 fill=%22%23ed8936%22/><text x=%2240%22 y=%2245%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2220%22>GV</text></svg>'">
+        <span class="name">Gauthier Vila</span>
+        <span class="role">Founder, Zyfi</span>
+      </div>
+      <div class="team-member">
+        <img src="https://syndika.co/wp-content/webp-express/webp-images/uploads/2025/03/Property-1Leon.png.webp" alt="Leon Stern" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22><circle cx=%2240%22 cy=%2240%22 r=%2240%22 fill=%22%23805ad5%22/><text x=%2240%22 y=%2245%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2220%22>LS</text></svg>'">
+        <span class="name">Leon Stern</span>
+        <span class="role">Director of Growth, Polygon Labs</span>
+      </div>
+      <div class="team-member">
+        <img src="https://syndika.co/wp-content/webp-express/webp-images/uploads/2025/03/Property-1Chris.png.webp" alt="Chris James Murphy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22><circle cx=%2240%22 cy=%2240%22 r=%2240%22 fill=%22%23f6ad55%22/><text x=%2240%22 y=%2245%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2220%22>CM</text></svg>'">
+        <span class="name">Chris James Murphy</span>
+        <span class="role">Co-Founder, Klink Finance</span>
+      </div>
+      <div class="team-member">
+        <img src="https://syndika.co/wp-content/webp-express/webp-images/uploads/2025/03/Property-1Sean.png.webp" alt="Sean Kiernan" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22><circle cx=%2240%22 cy=%2240%22 r=%2240%22 fill=%22%234299e1%22/><text x=%2240%22 y=%2245%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2220%22>SK</text></svg>'">
+        <span class="name">Sean Kiernan</span>
+        <span class="role">CEO, Greengage</span>
+      </div>
+      <div class="team-member">
+        <img src="https://syndika.co/wp-content/webp-express/webp-images/uploads/2025/03/Property-1Lorenzo.png.webp" alt="Lorenzo Coni" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22><circle cx=%2240%22 cy=%2240%22 r=%2240%22 fill=%22%239f7aea%22/><text x=%2240%22 y=%2245%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2220%22>LC</text></svg>'">
+        <span class="name">Lorenzo Coni</span>
+        <span class="role">Head of BD, Sweat Economy</span>
+      </div>
+      <div class="team-member">
+        <img src="https://syndika.co/wp-content/webp-express/webp-images/uploads/2025/03/Property-1Poorya-Shafiei.png.webp" alt="Poorya Shafiei" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22><circle cx=%2240%22 cy=%2240%22 r=%2240%22 fill=%22%233182ce%22/><text x=%2240%22 y=%2245%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2220%22>PS</text></svg>'">
+        <span class="name">Poorya Shafiei</span>
+        <span class="role">COO, ZipClash</span>
+      </div>
     </div>
-
-    <div class="member">
-      <svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><circle cx="32" cy="32" r="32" fill="#d69e2e"/><text x="32" y="37" text-anchor="middle" fill="#fff" font-family="system-ui" font-size="18" font-weight="700">AC</text></svg>
-      <span class="name">Alex Cucer</span><span class="role">CTO of Syndika</span>
-    </div>
-
-    <div class="member">
-      <svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><circle cx="32" cy="32" r="32" fill="#5a67d8"/><text x="32" y="37" text-anchor="middle" fill="#fff" font-family="system-ui" font-size="18" font-weight="700">EK</text></svg>
-      <span class="name">Eitan Katz</span><span class="role">Co-Founder & CEO, Kima Network</span>
-    </div>
-
-    <div class="member">
-      <svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><circle cx="32" cy="32" r="32" fill="#38a169"/><text x="32" y="37" text-anchor="middle" fill="#fff" font-family="system-ui" font-size="18" font-weight="700">JK</text></svg>
-      <span class="name">Julian Kwan</span><span class="role">Co-Founder & CEO, IXS & InvestaX</span>
-    </div>
-
-    <div class="member">
-      <svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><circle cx="32" cy="32" r="32" fill="#dd6b20"/><text x="32" y="37" text-anchor="middle" fill="#fff" font-family="system-ui" font-size="18" font-weight="700">ST</text></svg>
-      <span class="name">Stefano Tresca</span><span class="role">CEO, Sixth Society</span>
-    </div>
-
-    <div class="member">
-      <svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><circle cx="32" cy="32" r="32" fill="#48bb78"/><text x="32" y="37" text-anchor="middle" fill="#fff" font-family="system-ui" font-size="18" font-weight="700">IS</text></svg>
-      <span class="name">Ioana Surpateanu</span><span class="role">CSO, Dreamer Labs</span>
-    </div>
-
-    <div class="member">
-      <svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><circle cx="32" cy="32" r="32" fill="#ed8936"/><text x="32" y="37" text-anchor="middle" fill="#fff" font-family="system-ui" font-size="18" font-weight="700">GV</text></svg>
-      <span class="name">Gauthier Vila</span><span class="role">Founder, Zyfi</span>
-    </div>
-
-    <div class="member">
-      <svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><circle cx="32" cy="32" r="32" fill="#805ad5"/><text x="32" y="37" text-anchor="middle" fill="#fff" font-family="system-ui" font-size="18" font-weight="700">LS</text></svg>
-      <span class="name">Leon Stern</span><span class="role">Director of Growth, Polygon Labs</span>
-    </div>
-
-    <div class="member">
-      <svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><circle cx="32" cy="32" r="32" fill="#f6ad55"/><text x="32" y="37" text-anchor="middle" fill="#fff" font-family="system-ui" font-size="18" font-weight="700">CM</text></svg>
-      <span class="name">Chris James Murphy</span><span class="role">Co-Founder, Klink Finance</span>
-    </div>
-
-    <div class="member">
-      <svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><circle cx="32" cy="32" r="32" fill="#4299e1"/><text x="32" y="37" text-anchor="middle" fill="#fff" font-family="system-ui" font-size="18" font-weight="700">SK</text></svg>
-      <span class="name">Sean Kiernan</span><span class="role">CEO, Greengage</span>
-    </div>
-
-    <div class="member">
-      <svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><circle cx="32" cy="32" r="32" fill="#9f7aea"/><text x="32" y="37" text-anchor="middle" fill="#fff" font-family="system-ui" font-size="18" font-weight="700">LC</text></svg>
-      <span class="name">Lorenzo Coni</span><span class="role">Head of BD, Sweat Economy</span>
-    </div>
-
-    <div class="member">
-      <svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><circle cx="32" cy="32" r="32" fill="#3182ce"/><text x="32" y="37" text-anchor="middle" fill="#fff" font-family="system-ui" font-size="18" font-weight="700">PS</text></svg>
-      <span class="name">Poorya Shafiei</span><span class="role">COO, ZipClash</span>
-    </div>
-
   </div>
-</div>
 </section>
 
-<!-- Testimonials -->
+<!-- Success Stories -->
 <section class="section section-alt">
-<div class="wrap">
-  <h2>Testimonials</h2>
-  <p class="lead">What our partners and clients say.</p>
-  <div class="grid grid-3">
-    <div class="quote-card">
-      <p>&ldquo;Syndika provided invaluable insights and execution for our Web3 project. Their team&rsquo;s expertise is second to none.&rdquo;</p>
-      <span class="author">&mdash; Startup Founder</span>
-    </div>
-    <div class="quote-card">
-      <p>&ldquo;The flexibility and strategic guidance from Syndika allowed us to pivot and scale effectively. Highly recommended.&rdquo;</p>
-      <span class="author">&mdash; Tech Innovator</span>
-    </div>
-    <div class="quote-card">
-      <p>&ldquo;From tokenomics to smart contract security, Syndika&rsquo;s team delivered exceptional results across the board.&rdquo;</p>
-      <span class="author">&mdash; Blockchain Lead</span>
+  <div class="wrap">
+    <h2>Success Stories</h2>
+    <p class="lead">Real stories, real impact.</p>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <p>"The team's strategic guidance and hands-on marketing support have allowed us to engage a broader community and refine our brand. As we approach our TGE, the strong support from Syndika has played a pivotal role in positioning Kima for long-term success."</p>
+        <span class="author">— Kima Network</span>
+      </div>
+      <div class="testi-card">
+        <p>"Syndika's ability to foster meaningful connections and drive innovation has been invaluable for us at Nominis. Thanks to the Syndika network, we've had the opportunity to collaborate with a diverse range of startups."</p>
+        <span class="author">— Nominis</span>
+      </div>
+      <div class="testi-card">
+        <p>"With Alex Cucer serving as CTO, the team's blockchain, security, and regulatory expertise helped us deliver scalable solutions that aligned with our long-term vision. Syndika also played a key role in InvestaX's strategic decisions."</p>
+        <span class="author">— InvestaX</span>
+      </div>
+      <div class="testi-card">
+        <p>"Syndika has been instrumental in helping us develop and maintain our complex software systems. They are knowledgeable, responsive, and consistently go above and beyond to ensure our success."</p>
+        <span class="author">— Tea-Fi</span>
+      </div>
     </div>
   </div>
-</div>
 </section>
 
 <!-- Partners -->
-<section class="section">
-<div class="wrap">
-  <h2>Partners</h2>
-  <p class="lead">Collaborating with industry leaders to drive innovation.</p>
-  <div class="grid grid-4">
-    <div class="partner-logo"><span>Partner A</span></div>
-    <div class="partner-logo"><span>Partner B</span></div>
-    <div class="partner-logo"><span>Partner C</span></div>
-    <div class="partner-logo"><span>Partner D</span></div>
+<section id="partners" class="section">
+  <div class="wrap">
+    <h2>Partners</h2>
+    <p class="lead">Collaborating with industry leaders to drive innovation.</p>
+    <div class="partner-grid">
+      <div class="partner-logo"><span>Alty</span></div>
+      <div class="partner-logo"><span>Kima</span></div>
+      <div class="partner-logo"><span>Balthazar</span></div>
+      <div class="partner-logo"><span>Bitflex</span></div>
+      <div class="partner-logo"><span>Sixth Society</span></div>
+      <div class="partner-logo"><span>Zyfi</span></div>
+      <div class="partner-logo"><span>Trustyfy</span></div>
+      <div class="partner-logo"><span>Tea-Fi</span></div>
+    </div>
   </div>
-</div>
 </section>
 
 <!-- Footer -->
 <footer class="footer">
-<div class="wrap">
-  <p>&copy; 2026 <a href="https://syndika.co" target="_blank" rel="noopener">Syndika</a>. All rights reserved.</p>
-  <p class="ai-credit">This page was crafted by <span>AI Mike</span> — Syndika's AI-powered assistant</p>
-</div>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">SYNDIKA<span>.</span></div>
+        <p class="footer-desc">Connecting Web3 startups with expertise, resources, and connections that create high impact. Now enhanced with AI capabilities.</p>
+      </div>
+      <div>
+        <h4>Services</h4>
+        <ul class="footer-links">
+          <li><a href="#technology">Technology</a></li>
+          <li><a href="#economics">Economics</a></li>
+          <li><a href="#cyber">Cyber & Compliance</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul class="footer-links">
+          <li><a href="https://syndika.co/about-us/">About Us</a></li>
+          <li><a href="https://syndika.co/syndicate/">The Syndicate</a></li>
+          <li><a href="https://syndika.co/careers/">Careers</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul class="footer-links">
+          <li><a href="https://syndika.co/contact-us/">Get in Touch</a></li>
+          <li><a href="https://syndika.co/partners/">Partners</a></li>
+          <li><a href="https://syndika.co/blog/">Blog</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 <a href="https://syndika.co">Syndika</a>. All rights reserved.</p>
+      <p class="footer-ai">🤖 This page was crafted by <span>AI Mike</span> — Syndika's AI-powered assistant</p>
+    </div>
+  </div>
 </footer>
 
 </body>
