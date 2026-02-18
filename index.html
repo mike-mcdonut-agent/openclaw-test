@@ -17,14 +17,15 @@
   --dark: #0a0a0a;
   --surface: #141414;
   --card: #1a1a1a;
-  --border: rgba(255,255,255,.08);
+  --border: rgba(255,255,255,.06);
   --purple: #7c3aed;
-  --purple-light: #9f67ff;
+  --purple-glow: rgba(124,58,237,.4);
+  --purple-light: #a78bfa;
   --gold: #d69e2e;
-  --gold-light: #f0c040;
+  --gold-glow: rgba(214,158,46,.3);
   --white: #ffffff;
-  --muted: #a0a0a0;
-  --light: #d4d4d4;
+  --muted: #a1a1aa;
+  --light: #e4e4e7;
   --font-main: 'Sora', system-ui, -apple-system, sans-serif;
 }
 
@@ -36,10 +37,24 @@ body {
   color: var(--white);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
-a { color: var(--purple-light); text-decoration: none; transition: color .2s; }
-a:hover { color: var(--gold-light); }
+a { color: var(--purple-light); text-decoration: none; transition: all .3s; }
+a:hover { color: var(--gold); }
 img { display: block; max-width: 100%; height: auto; }
+
+/* ---- Scroll Animations ---- */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all .8s cubic-bezier(.16, 1, .3, 1);
+}
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-left { transform: translateX(-50px); }
+.reveal-right { transform: translateX(50px); }
 
 /* ---- Layout ---- */
 .wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
@@ -50,19 +65,28 @@ img { display: block; max-width: 100%; height: auto; }
   padding: 12px 0;
   text-align: center;
   font-size: .9rem;
+  position: relative;
+  z-index: 100;
 }
 .topbar a { color: var(--white); font-weight: 600; }
 .topbar a:hover { color: var(--gold); }
 
 /* ---- Nav ---- */
 .nav {
-  background: rgba(10,10,10,.95);
-  backdrop-filter: blur(12px);
+  background: rgba(10,10,10,.85);
+  backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border);
-  position: sticky;
+  position: fixed;
   top: 0;
-  z-index: 100;
-  padding: 16px 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 14px 0;
+  transition: all .3s;
+}
+.nav.scrolled {
+  padding: 10px 0;
+  background: rgba(10,10,10,.95);
 }
 .nav-inner {
   display: flex;
@@ -70,75 +94,157 @@ img { display: block; max-width: 100%; height: auto; }
   align-items: center;
 }
 .nav-logo {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: 800;
   color: var(--white);
-  letter-spacing: -.02em;
+  letter-spacing: -.03em;
 }
 .nav-logo span { color: var(--purple-light); }
-.nav-links { display: flex; gap: 32px; list-style: none; }
+.nav-links { display: flex; gap: 32px; list-style: none; align-items: center; }
 .nav-links a {
   color: var(--light);
   font-size: .95rem;
   font-weight: 500;
+  position: relative;
 }
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--purple);
+  transition: width .3s;
+}
+.nav-links a:hover::after { width: 100%; }
 .nav-links a:hover { color: var(--white); }
 .nav-cta {
-  background: var(--purple);
+  background: linear-gradient(135deg, var(--purple), #5b21b6);
   color: var(--white) !important;
   padding: 10px 24px;
   border-radius: 8px;
   font-weight: 600;
+  box-shadow: 0 4px 20px var(--purple-glow);
 }
-.nav-cta:hover { background: var(--purple-light); }
+.nav-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px var(--purple-glow);
+}
 
 /* ---- Hero ---- */
 .hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  padding: 100px 0 120px;
-  background: 
-    radial-gradient(ellipse at 30% 20%, rgba(124,58,237,.15) 0%, transparent 50%),
-    radial-gradient(ellipse at 70% 80%, rgba(214,158,46,.1) 0%, transparent 50%),
-    var(--dark);
+  padding: 120px 0 100px;
   position: relative;
   overflow: hidden;
+  background: 
+    radial-gradient(ellipse at 20% 20%, rgba(124,58,237,.2) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(214,158,46,.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(91,33,182,.1) 0%, transparent 70%),
+    var(--dark);
 }
+/* Animated mesh */
 .hero::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: -50%; width: 200%; height: 200%;
+  background: 
+    radial-gradient(ellipse at 30% 30%, rgba(124,58,237,.12) 0%, transparent 40%),
+    radial-gradient(ellipse at 70% 70%, rgba(214,158,46,.08) 0%, transparent 40%);
+  animation: meshFloat 25s ease-in-out infinite;
+  z-index: 0;
+}
+@keyframes meshFloat {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  33% { transform: translate(3%, 5%) rotate(2deg); }
+  66% { transform: translate(-2%, 3%) rotate(-1deg); }
+}
+/* Particles */
+.hero::after {
   content: '';
   position: absolute;
   top: 0; left: 0; width: 100%; height: 100%;
   background-image: 
-    radial-gradient(2px 2px at 15% 25%, rgba(255,255,255,.12) 50%, transparent 50%),
-    radial-gradient(2px 2px at 35% 65%, rgba(255,255,255,.08) 50%, transparent 50%),
-    radial-gradient(3px 3px at 55% 15%, rgba(255,255,255,.1) 50%, transparent 50%),
-    radial-gradient(2px 2px at 75% 55%, rgba(255,255,255,.09) 50%, transparent 50%),
-    radial-gradient(2px 2px at 85% 35%, rgba(255,255,255,.11) 50%, transparent 50%),
-    radial-gradient(2px 2px at 25% 85%, rgba(255,255,255,.07) 50%, transparent 50%);
-  animation: float 18s ease-in-out infinite;
+    radial-gradient(2px 2px at 10% 15%, rgba(255,255,255,.2) 50%, transparent 50%),
+    radial-gradient(2px 2px at 25% 65%, rgba(255,255,255,.12) 50%, transparent 50%),
+    radial-gradient(3px 3px at 45% 25%, rgba(255,255,255,.15) 50%, transparent 50%),
+    radial-gradient(2px 2px at 65% 75%, rgba(255,255,255,.1) 50%, transparent 50%),
+    radial-gradient(2px 2px at 85% 35%, rgba(255,255,255,.13) 50%, transparent 50%),
+    radial-gradient(2px 2px at 55% 85%, rgba(255,255,255,.08) 50%, transparent 50%),
+    radial-gradient(2px 2px at 90% 60%, rgba(255,255,255,.11) 50%, transparent 50%);
+  animation: particleFloat 18s ease-in-out infinite;
+  z-index: 1;
 }
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-15px); }
+@keyframes particleFloat {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-25px) scale(1.02); }
 }
-.hero-content { position: relative; z-index: 1; }
+/* Floating orbs */
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  z-index: 0;
+  animation: orbFloat 20s ease-in-out infinite;
+}
+.orb-1 {
+  width: 400px; height: 400px;
+  background: var(--purple-glow);
+  top: 10%; left: -10%;
+}
+.orb-2 {
+  width: 300px; height: 300px;
+  background: var(--gold-glow);
+  bottom: 10%; right: -5%;
+  animation-delay: -7s;
+}
+.orb-3 {
+  width: 200px; height: 200px;
+  background: rgba(124,58,237,.3);
+  top: 60%; left: 70%;
+  animation-delay: -14s;
+}
+@keyframes orbFloat {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(20px, -30px) scale(1.05); }
+  66% { transform: translate(-15px, 20px) scale(.95); }
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
 .hero h1 {
-  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-size: clamp(2.8rem, 7vw, 5rem);
   font-weight: 800;
-  line-height: 1.1;
+  line-height: 1.05;
   margin-bottom: 24px;
-  letter-spacing: -.03em;
+  letter-spacing: -.04em;
 }
 .hero h1 span {
-  background: linear-gradient(135deg, var(--purple-light), var(--gold-light));
+  background: linear-gradient(135deg, var(--white) 0%, var(--purple-light) 50%, var(--gold) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  display: inline-block;
+  animation: shimmer 3s ease-in-out infinite;
+  background-size: 200% auto;
+}
+@keyframes shimmer {
+  0%, 100% { background-position: 0% center; }
+  50% { background-position: 100% center; }
 }
 .hero .sub {
-  font-size: 1.25rem;
+  font-size: 1.3rem;
   color: var(--muted);
-  max-width: 640px;
-  margin: 0 auto 32px;
+  max-width: 600px;
+  margin: 0 auto 36px;
+  line-height: 1.7;
 }
 .hero-btns {
   display: flex;
@@ -148,19 +254,31 @@ img { display: block; max-width: 100%; height: auto; }
 }
 .btn {
   display: inline-block;
-  padding: 14px 32px;
-  border-radius: 10px;
+  padding: 16px 36px;
+  border-radius: 12px;
   font-weight: 600;
   font-size: 1rem;
-  transition: all .25s;
+  transition: all .35s cubic-bezier(.16, 1, .3, 1);
 }
 .btn-primary {
-  background: var(--purple);
+  background: linear-gradient(135deg, var(--purple), #5b21b6);
   color: var(--white);
+  box-shadow: 0 8px 32px var(--purple-glow);
+  position: relative;
+  overflow: hidden;
 }
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.2), transparent);
+  transition: left .5s;
+}
+.btn-primary:hover::before { left: 100%; }
 .btn-primary:hover {
-  background: var(--purple-light);
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+  box-shadow: 0 16px 48px var(--purple-glow);
 }
 .btn-secondary {
   background: transparent;
@@ -168,27 +286,33 @@ img { display: block; max-width: 100%; height: auto; }
   color: var(--light);
 }
 .btn-secondary:hover {
-  border-color: var(--purple);
+  border-color: var(--purple-light);
   color: var(--white);
+  transform: translateY(-3px);
 }
 .ai-badge {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  margin-top: 24px;
-  padding: 8px 16px;
-  background: rgba(124,58,237,.15);
-  border: 1px solid rgba(124,58,237,.3);
+  gap: 10px;
+  margin-top: 36px;
+  padding: 12px 24px;
+  background: rgba(124,58,237,.12);
+  border: 1px solid rgba(124,58,237,.25);
   border-radius: 50px;
-  font-size: .85rem;
+  font-size: .9rem;
   color: var(--purple-light);
+  animation: pulse 3s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(124,58,237,.3); }
+  50% { box-shadow: 0 0 0 15px rgba(124,58,237,0); }
 }
 
 /* ---- Section ---- */
-.section { padding: 90px 0; }
+.section { padding: 110px 0; position: relative; }
 .section-alt { background: var(--surface); }
 .section h2 {
-  font-size: 2.5rem;
+  font-size: 2.8rem;
   font-weight: 700;
   text-align: center;
   margin-bottom: 16px;
@@ -197,9 +321,9 @@ img { display: block; max-width: 100%; height: auto; }
 .section .lead {
   text-align: center;
   color: var(--muted);
-  font-size: 1.1rem;
-  max-width: 600px;
-  margin: 0 auto 50px;
+  font-size: 1.15rem;
+  max-width: 620px;
+  margin: 0 auto 60px;
 }
 
 /* ---- Cards Grid ---- */
@@ -210,91 +334,149 @@ img { display: block; max-width: 100%; height: auto; }
 .card {
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 32px 28px;
-  transition: all .3s;
+  border-radius: 20px;
+  padding: 36px 32px;
+  transition: all .4s cubic-bezier(.16, 1, .3, 1);
+  position: relative;
+  overflow: hidden;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--purple), var(--gold));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .4s;
 }
 .card:hover {
-  transform: translateY(-6px);
-  border-color: var(--purple);
-  box-shadow: 0 20px 40px rgba(0,0,0,.3);
+  transform: translateY(-10px);
+  border-color: rgba(124,58,237,.3);
+  box-shadow: 0 24px 60px rgba(0,0,0,.4), 0 0 40px var(--purple-glow);
 }
+.card:hover::before { transform: scaleX(1); }
 .card-icon {
-  width: 56px;
-  height: 56px;
+  width: 64px;
+  height: 64px;
   background: linear-gradient(135deg, var(--purple), #5b21b6);
-  border-radius: 12px;
+  border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 20px;
-  font-size: 1.5rem;
+  margin-bottom: 24px;
+  font-size: 1.8rem;
+  transition: transform .3s;
 }
+.card:hover .card-icon { transform: scale(1.1) rotate(5deg); }
 .card h3 {
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   font-weight: 700;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   color: var(--white);
 }
 .card p { color: var(--muted); font-size: .95rem; }
+
+/* ---- Service Numbers ---- */
+.serv-num {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  font-size: 4rem;
+  font-weight: 800;
+  color: rgba(255,255,255,.03);
+  line-height: 1;
+}
 
 /* ---- About ---- */
 .about {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 60px;
+  gap: 80px;
   align-items: center;
 }
 .about-text h2 {
   text-align: left;
-  font-size: 2.2rem;
-  margin-bottom: 20px;
+  font-size: 2.4rem;
+  margin-bottom: 24px;
 }
 .about-text p {
   color: var(--muted);
-  font-size: 1.05rem;
-  line-height: 1.8;
-  margin-bottom: 16px;
+  font-size: 1.08rem;
+  line-height: 1.85;
+  margin-bottom: 18px;
 }
+.about-text strong { color: var(--purple-light); }
 .about-visual {
   position: relative;
+}
+.about-visual::before {
+  content: '';
+  position: absolute;
+  top: -20px; left: -20px; right: 20px; bottom: 20px;
+  border: 2px solid var(--purple);
+  border-radius: 24px;
+  opacity: .3;
 }
 .about-visual svg {
   width: 100%;
   border-radius: 20px;
+  position: relative;
+  z-index: 1;
 }
 
 /* ---- Team ---- */
 .team-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 24px;
 }
 .team-member {
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 20px;
+  border-radius: 20px;
+  padding: 24px 16px;
   text-align: center;
-  transition: all .3s;
+  transition: all .4s cubic-bezier(.16, 1, .3, 1);
+  position: relative;
+}
+.team-member::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 20px;
+  padding: 1px;
+  background: linear-gradient(135deg, var(--purple), var(--gold));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity .3s;
 }
 .team-member:hover {
-  transform: translateY(-4px);
-  border-color: var(--purple);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 50px rgba(0,0,0,.4);
 }
+.team-member:hover::before { opacity: 1; }
 .team-member img {
-  width: 80px;
-  height: 80px;
+  width: 90px;
+  height: 90px;
   border-radius: 50%;
   object-fit: cover;
-  margin: 0 auto 14px;
-  border: 3px solid var(--purple);
+  margin: 0 auto 16px;
+  border: 4px solid var(--purple);
+  transition: border-color .3s, transform .3s;
+}
+.team-member:hover img {
+  border-color: var(--gold);
+  transform: scale(1.08);
 }
 .team-member .name {
   font-weight: 700;
-  font-size: .95rem;
+  font-size: 1rem;
   display: block;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 .team-member .role {
   font-size: .8rem;
@@ -308,75 +490,114 @@ img { display: block; max-width: 100%; height: auto; }
 .testi-card {
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 32px;
+  border-radius: 20px;
+  padding: 36px;
+  position: relative;
+  transition: all .3s;
+}
+.testi-card:hover {
+  border-color: rgba(124,58,237,.3);
+  box-shadow: 0 16px 40px rgba(0,0,0,.3);
+}
+.testi-card::before {
+  content: '"';
+  position: absolute;
+  top: 20px;
+  left: 28px;
+  font-size: 5rem;
+  color: rgba(124,58,237,.15);
+  font-family: Georgia, serif;
+  line-height: 1;
 }
 .testi-card p {
   font-style: italic;
   color: var(--light);
   font-size: 1rem;
-  line-height: 1.7;
+  line-height: 1.75;
   margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
 }
 .testi-card .author {
   color: var(--purple-light);
   font-weight: 600;
-  font-size: .9rem;
+  font-size: .95rem;
 }
 
 /* ---- Partners ---- */
 .partner-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 20px;
+  gap: 24px;
 }
 .partner-logo {
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 80px;
-  padding: 16px;
-  transition: all .3s;
+  height: 90px;
+  padding: 20px;
+  transition: all .4s cubic-bezier(.16, 1, .3, 1);
+  position: relative;
+  overflow: hidden;
+}
+.partner-logo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--purple), var(--gold));
+  opacity: 0;
+  transition: opacity .3s;
 }
 .partner-logo:hover {
+  transform: translateY(-6px) scale(1.03);
   border-color: var(--purple);
-  transform: scale(1.03);
+  box-shadow: 0 16px 40px rgba(0,0,0,.3);
 }
+.partner-logo:hover::after { opacity: .05; }
 .partner-logo img {
   max-height: 50px;
   width: auto;
+  position: relative;
+  z-index: 1;
+  filter: grayscale(100%) brightness(.8);
+  transition: filter .3s;
 }
-.partner-logo span {
-  color: var(--muted);
-  font-weight: 600;
-  font-size: .85rem;
-}
+.partner-logo:hover img { filter: grayscale(0%) brightness(1); }
 
 /* ---- The Syndicate ---- */
 .syndicate {
-  background: linear-gradient(180deg, var(--dark) 0%, var(--surface) 100%);
+  background: 
+    radial-gradient(ellipse at 30% 0%, rgba(124,58,237,.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 100%, rgba(214,158,46,.1) 0%, transparent 50%),
+    linear-gradient(180deg, var(--dark) 0%, var(--surface) 100%);
   text-align: center;
-  padding: 100px 0;
+  padding: 120px 0;
+  position: relative;
 }
 .syndicate h2 {
-  font-size: 2.5rem;
-  margin-bottom: 20px;
+  font-size: 3rem;
+  margin-bottom: 24px;
 }
 .syndicate .lead {
-  max-width: 700px;
-  margin: 0 auto 50px;
+  max-width: 750px;
 }
 .syndicate-badge {
   display: inline-block;
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 50px;
-  padding: 16px 40px;
-  font-size: 1.1rem;
+  border-radius: 60px;
+  padding: 20px 50px;
+  font-size: 1.15rem;
   color: var(--light);
+  margin-top: 20px;
+  transition: all .3s;
+}
+.syndicate-badge:hover {
+  border-color: var(--purple);
+  box-shadow: 0 8px 32px var(--purple-glow);
 }
 .syndicate-badge strong {
   color: var(--purple-light);
@@ -386,67 +607,119 @@ img { display: block; max-width: 100%; height: auto; }
 .footer {
   background: var(--surface);
   border-top: 1px solid var(--border);
-  padding: 50px 0 30px;
+  padding: 70px 0 30px;
+  position: relative;
+}
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--purple), transparent);
 }
 .footer-grid {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr;
-  gap: 40px;
-  margin-bottom: 40px;
+  gap: 50px;
+  margin-bottom: 50px;
 }
 .footer-brand {
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   font-weight: 800;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
+  letter-spacing: -.02em;
 }
 .footer-brand span { color: var(--purple-light); }
 .footer-desc {
   color: var(--muted);
   font-size: .95rem;
-  line-height: 1.7;
+  line-height: 1.75;
 }
 .footer h4 {
-  font-size: .9rem;
+  font-size: .85rem;
   text-transform: uppercase;
-  letter-spacing: .1em;
+  letter-spacing: .12em;
   color: var(--muted);
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 .footer-links {
   list-style: none;
 }
-.footer-links li { margin-bottom: 10px; }
+.footer-links li { margin-bottom: 12px; }
 .footer-links a { color: var(--light); font-size: .95rem; }
-.footer-links a:hover { color: var(--white); }
+.footer-links a:hover { 
+  color: var(--white); 
+  padding-left: 8px;
+  transition: padding .3s;
+}
 .footer-bottom {
   border-top: 1px solid var(--border);
-  padding-top: 24px;
+  padding-top: 28px;
   text-align: center;
   color: var(--muted);
   font-size: .9rem;
 }
 .footer-ai {
-  margin-top: 12px;
+  margin-top: 14px;
   font-size: .85rem;
 }
-.footer-ai span { color: var(--purple-light); font-weight: 600; }
+.footer-ai span { 
+  color: var(--purple-light); 
+  font-weight: 600;
+}
 
 /* ---- Responsive ---- */
 @media (max-width: 900px) {
-  .about { grid-template-columns: 1fr; }
+  .about { grid-template-columns: 1fr; gap: 40px; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 600px) {
   .nav-links { display: none; }
-  .section { padding: 60px 0; }
-  .hero { padding: 60px 0 80px; }
+  .section { padding: 70px 0; }
+  .hero { padding: 100px 0 70px; }
+  .hero h1 { font-size: 2.2rem; }
   .footer-grid { grid-template-columns: 1fr; }
+  .team-grid { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* ---- Animations Delays ---- */
+.delay-1 { transition-delay: .1s; }
+.delay-2 { transition-delay: .2s; }
+.delay-3 { transition-delay: .3s; }
+.delay-4 { transition-delay: .4s; }
 </style>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<script>
+// Scroll reveal
+window.addEventListener('scroll', reveal);
+function reveal() {
+  var reveals = document.querySelectorAll('.reveal');
+  for (var i = 0; i < reveals.length; i++) {
+    var windowHeight = window.innerHeight;
+    var revealTop = reveals[i].getBoundingClientRect().top;
+    var revealPoint = 100;
+    if (revealTop < windowHeight - revealPoint) {
+      reveals[i].classList.add('active');
+    }
+  }
+}
+
+// Nav scroll
+window.addEventListener('scroll', function() {
+  var nav = document.querySelector('.nav');
+  if (window.scrollY > 50) {
+    nav.classList.add('scrolled');
+  } else {
+    nav.classList.remove('scrolled');
+  }
+});
+</script>
 </head>
 <body>
 
@@ -473,6 +746,10 @@ img { display: block; max-width: 100%; height: auto; }
 
 <!-- Hero -->
 <section class="hero">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  
   <div class="wrap hero-content">
     <h1>Where Web3 Startups<br><span>Get Discovered</span></h1>
     <p class="sub">The brightest minds in Web3 use Syndika to find expertise, resources, and connections that create high impact.</p>
@@ -489,40 +766,47 @@ img { display: block; max-width: 100%; height: auto; }
 <!-- Technology -->
 <section id="technology" class="section">
   <div class="wrap">
-    <h2>Technology</h2>
-    <p class="lead">End-to-end technical solutions from research to production.</p>
+    <h2 class="reveal">Technology</h2>
+    <p class="lead reveal delay-1">End-to-end technical solutions from research to production.</p>
     <div class="grid grid-3">
-      <div class="card">
+      <div class="card reveal delay-1">
+        <span class="serv-num">01</span>
         <div class="card-icon">💡</div>
         <h3>Consulting / Research</h3>
         <p>Expert guidance to navigate complex technological landscapes and emerging paradigms.</p>
       </div>
-      <div class="card">
+      <div class="card reveal delay-2">
+        <span class="serv-num">02</span>
         <div class="card-icon">🏗️</div>
         <h3>Architecture</h3>
         <p>Designing robust, scalable systems built for the decentralized future.</p>
       </div>
-      <div class="card">
+      <div class="card reveal delay-3">
+        <span class="serv-num">03</span>
         <div class="card-icon">📱</div>
         <h3>Web2 / Mobile Dev</h3>
         <p>Building high-performance applications for today's web and mobile platforms.</p>
       </div>
-      <div class="card">
+      <div class="card reveal delay-1">
+        <span class="serv-num">04</span>
         <div class="card-icon">⛓️</div>
         <h3>Web3 / Smart Contract Dev</h3>
         <p>Crafting secure, audited decentralized applications and on-chain logic.</p>
       </div>
-      <div class="card">
+      <div class="card reveal delay-2">
+        <span class="serv-num">05</span>
         <div class="card-icon">📊</div>
         <h3>Project Management</h3>
         <p>Streamlining execution with structured, agile project leadership.</p>
       </div>
-      <div class="card">
+      <div class="card reveal delay-3">
+        <span class="serv-num">06</span>
         <div class="card-icon">⚙️</div>
         <h3>DevOps</h3>
         <p>Seamless CI/CD pipelines, infrastructure-as-code, and cloud operations.</p>
       </div>
-      <div class="card">
+      <div class="card reveal delay-1">
+        <span class="serv-num">07</span>
         <div class="card-icon">✅</div>
         <h3>QA</h3>
         <p>Rigorous automated and manual testing for quality and reliability.</p>
@@ -534,40 +818,47 @@ img { display: block; max-width: 100%; height: auto; }
 <!-- Economics -->
 <section id="economics" class="section section-alt">
   <div class="wrap">
-    <h2>Economics</h2>
-    <p class="lead">Strategic economic design, data science, and AI-driven insights.</p>
+    <h2 class="reveal">Economics</h2>
+    <p class="lead reveal delay-1">Strategic economic design, data science, and AI-driven insights.</p>
     <div class="grid grid-3">
-      <div class="card">
+      <div class="card reveal delay-1">
+        <span class="serv-num">01</span>
         <div class="card-icon">🌐</div>
         <h3>Holistic Consultancy</h3>
         <p>Integrated strategies for sustainable, long-term growth.</p>
       </div>
-      <div class="card">
+      <div class="card reveal delay-2">
+        <span class="serv-num">02</span>
         <div class="card-icon">📈</div>
         <h3>Economic Research</h3>
         <p>In-depth analysis of market dynamics and competitive landscapes.</p>
       </div>
-      <div class="card">
+      <div class="card reveal delay-3">
+        <span class="serv-num">03</span>
         <div class="card-icon">🧮</div>
         <h3>Economic Modeling</h3>
         <p>Predictive analytics and simulation for financial forecasting.</p>
       </div>
-      <div class="card">
+      <div class="card reveal delay-1">
+        <span class="serv-num">04</span>
         <div class="card-icon">💰</div>
         <h3>Product Economics</h3>
         <p>Optimizing value propositions, pricing, and unit economics.</p>
       </div>
-      <div class="card">
+      <div class="card reveal delay-2">
+        <span class="serv-num">05</span>
         <div class="card-icon">🪙</div>
         <h3>Token Economics</h3>
         <p>Designing robust, sustainable tokenomics for blockchain projects.</p>
       </div>
-      <div class="card">
+      <div class="card reveal delay-3">
+        <span class="serv-num">06</span>
         <div class="card-icon">🔬</div>
         <h3>Data Science</h3>
         <p>Unlocking actionable insights from complex, high-volume datasets.</p>
       </div>
-      <div class="card">
+      <div class="card reveal delay-1">
+        <span class="serv-num">07</span>
         <div class="card-icon">🤖</div>
         <h3>AI / ML</h3>
         <p>Leveraging artificial intelligence and machine learning for innovation.</p>
@@ -579,30 +870,35 @@ img { display: block; max-width: 100%; height: auto; }
 <!-- Cyber & Compliance -->
 <section id="cyber" class="section">
   <div class="wrap">
-    <h2>Cyber &amp; Compliance</h2>
-    <p class="lead">Fortifying digital assets with advanced security and regulatory adherence.</p>
+    <h2 class="reveal">Cyber &amp; Compliance</h2>
+    <p class="lead reveal delay-1">Fortifying digital assets with advanced security and regulatory adherence.</p>
     <div class="grid grid-3">
-      <div class="card">
+      <div class="card reveal delay-1">
+        <span class="serv-num">01</span>
         <div class="card-icon">🛡️</div>
         <h3>CISO on Demand</h3>
         <p>Executive-level cybersecurity leadership, on your schedule.</p>
       </div>
-      <div class="card">
+      <div class="card reveal delay-2">
+        <span class="serv-num">02</span>
         <div class="card-icon">🔍</div>
         <h3>Assessment / Advisory</h3>
         <p>Comprehensive risk evaluations and strategic security advice.</p>
       </div>
-      <div class="card">
+      <div class="card reveal delay-3">
+        <span class="serv-num">03</span>
         <div class="card-icon">📋</div>
         <h3>Managed Compliance</h3>
         <p>Ongoing security operations and regulatory oversight.</p>
       </div>
-      <div class="card">
+      <div class="card reveal delay-1">
+        <span class="serv-num">04</span>
         <div class="card-icon">🎯</div>
         <h3>Threat Intelligence</h3>
         <p>Proactive identification and mitigation of emerging cyber threats.</p>
       </div>
-      <div class="card">
+      <div class="card reveal delay-2">
+        <span class="serv-num">05</span>
         <div class="card-icon">🚨</div>
         <h3>Incident Response</h3>
         <p>Rapid, effective handling of security breaches and recovery.</p>
@@ -614,9 +910,9 @@ img { display: block; max-width: 100%; height: auto; }
 <!-- The Syndicate -->
 <section id="syndicate" class="syndicate">
   <div class="wrap">
-    <h2>The Syndicate</h2>
-    <p class="lead">Our vibrant network offers know-how, networking, and experience in all aspects of building Web3.</p>
-    <div class="syndicate-badge">
+    <h2 class="reveal">The Syndicate</h2>
+    <p class="lead reveal delay-1">Our vibrant network offers know-how, networking, and experience in all aspects of building Web3.</p>
+    <div class="syndicate-badge reveal delay-2">
       We're all part of <strong>one hub</strong> where everyone knows everyone — to get your Web3 venture to the next level.
     </div>
   </div>
@@ -626,18 +922,25 @@ img { display: block; max-width: 100%; height: auto; }
 <section class="section section-alt">
   <div class="wrap">
     <div class="about">
-      <div class="about-text">
+      <div class="about-text reveal">
         <h2>Not Just Another Venture Studio</h2>
         <p>Excitement and innovation are what drive Web3, but success requires more than a brilliant idea. At Syndika, builders get flexible access to strategic guidance from a network of experienced members who've walked this path before.</p>
         <p>Plus world-class Web3 services in <strong>technology, economics, cybersecurity, and compliance</strong>. If accepted, you'll not only boost your project's success — you'll help build the future of Web3.</p>
       </div>
-      <div class="about-visual">
+      <div class="about-visual reveal delay-2">
         <svg viewBox="0 0 500 350" xmlns="http://www.w3.org/2000/svg">
-          <rect width="500" height="350" rx="20" fill="#1a1a1a"/>
-          <circle cx="250" cy="150" r="80" fill="rgba(124,58,237,.2)"/>
-          <circle cx="250" cy="150" r="40" fill="rgba(214,158,46,.3)"/>
-          <text x="250" y="280" text-anchor="middle" fill="#a0a0a0" font-family="Sora, sans-serif" font-size="22" font-weight="700">SYNDIKA</text>
-          <text x="250" y="310" text-anchor="middle" fill="#7c3aed" font-family="Sora, sans-serif" font-size="14">Where Web3 Startups Get Discovered</text>
+          <defs>
+            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#7c3aed;stop-opacity:0.3" />
+              <stop offset="100%" style="stop-color:#d69e2e;stop-opacity:0.2" />
+            </linearGradient>
+          </defs>
+          <rect width="500" height="350" rx="24" fill="#1a1a1a"/>
+          <circle cx="250" cy="150" r="100" fill="url(#grad1)"/>
+          <circle cx="250" cy="150" r="50" fill="rgba(124,58,237,.3)"/>
+          <circle cx="250" cy="150" r="25" fill="rgba(214,158,46,.4)"/>
+          <text x="250" y="290" text-anchor="middle" fill="#a1a1aa" font-family="Sora, sans-serif" font-size="24" font-weight="700">SYNDIKA</text>
+          <text x="250" y="320" text-anchor="middle" fill="#a78bfa" font-family="Sora, sans-serif" font-size="14">Where Web3 Startups Get Discovered</text>
         </svg>
       </div>
     </div>
@@ -647,66 +950,66 @@ img { display: block; max-width: 100%; height: auto; }
 <!-- Team -->
 <section id="team" class="section">
   <div class="wrap">
-    <h2>The Team</h2>
-    <p class="lead">The minds shaping the future of Web3.</p>
+    <h2 class="reveal">The Team</h2>
+    <p class="lead reveal delay-1">The minds shaping the future of Web3.</p>
     <div class="team-grid">
-      <div class="team-member">
-        <img src="https://syndika.co/wp-content/webp-express/webp-images/uploads/2025/03/Property-1Tzahi.png.webp" alt="Tzahi Kanza" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22><circle cx=%2240%22 cy=%2240%22 r=%2240%22 fill=%22%237c3aed%22/><text x=%2240%22 y=%2245%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2220%22>TK</text></svg>'">
+      <div class="team-member reveal delay-1">
+        <img src="https://syndika.co/wp-content/webp-express/webp-images/uploads/2025/03/Property-1Tzahi.png.webp" alt="Tzahi Kanza">
         <span class="name">Tzahi Kanza</span>
         <span class="role">CEO of Syndika</span>
       </div>
-      <div class="team-member">
-        <img src="https://syndika.co/wp-content/webp-express/webp-images/uploads/2025/03/Property-1Cucer.png.webp" alt="Alex Cucer" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22><circle cx=%2240%22 cy=%2240%22 r=%2240%22 fill=%22%23d69e2e%22/><text x=%2240%22 y=%2245%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2220%22>AC</text></svg>'">
+      <div class="team-member reveal delay-2">
+        <img src="https://syndika.co/wp-content/webp-express/webp-images/uploads/2025/03/Property-1Cucer.png.webp" alt="Alex Cucer">
         <span class="name">Alex Cucer</span>
         <span class="role">CTO of Syndika</span>
       </div>
-      <div class="team-member">
-        <img src="https://syndika.co/wp-content/webp-express/webp-images/uploads/2025/03/Property-1Eitan.png.webp" alt="Eitan Katz" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22><circle cx=%2240%22 cy=%2240%22 r=%2240%22 fill=%22%235b21b6%22/><text x=%2240%22 y=%2245%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2220%22>EK</text></svg>'">
+      <div class="team-member reveal delay-3">
+        <img src="https://syndika.co/wp-content/webp-express/webp-images/uploads/2025/03/Property-1Eitan.png.webp" alt="Eitan Katz">
         <span class="name">Eitan Katz</span>
-        <span class="role">Co-Founder & CEO, Kima Network</span>
+        <span class="role">Co-Founder & CEO, Kima</span>
       </div>
-      <div class="team-member">
-        <img src="https://syndika.co/wp-content/webp-express/webp-images/uploads/2025/03/Property-1Julian-Julian-Kwan.png.webp" alt="Julian Kwan" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22><circle cx=%2240%22 cy=%2240%22 r=%2240%22 fill=%22%2338a169%22/><text x=%2240%22 y=%2245%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2220%22>JK</text></svg>'">
+      <div class="team-member reveal delay-1">
+        <img src="https://syndika.co/wp-content/webp-express/webp-images/uploads/2025/03/Property-1Julian-Julian-Kwan.png.webp" alt="Julian Kwan">
         <span class="name">Julian Kwan</span>
-        <span class="role">Co-Founder & CEO, IXS & InvestaX</span>
+        <span class="role">Co-Founder & CEO, IXS</span>
       </div>
-      <div class="team-member">
-        <img src="https://syndika.co/wp-content/webp-express/webp-images/uploads/2025/03/Property-1Stefano.png.webp" alt="Stefano Tresca" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22><circle cx=%2240%22 cy=%2240%22 r=%2240%22 fill=%22%23dd6b20%22/><text x=%2240%22 y=%2245%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2220%22>ST</text></svg>'">
+      <div class="team-member reveal delay-2">
+        <img src="https://syndika.co/wp-content/webp-express/webp-images/uploads/2025/03/Property-1Stefano.png.webp" alt="Stefano Tresca">
         <span class="name">Stefano Tresca</span>
         <span class="role">CEO, Sixth Society</span>
       </div>
-      <div class="team-member">
-        <img src="https://syndika.co/wp-content/webp-express/webp-images/uploads/2025/03/Property-1Ioana.png.webp" alt="Ioana Surpateanu" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22><circle cx=%2240%22 cy=%2240%22 r=%2240%22 fill=%22%2348bb78%22/><text x=%2240%22 y=%2245%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2220%22>IS</text></svg>'">
+      <div class="team-member reveal delay-3">
+        <img src="https://syndika.co/wp-content/webp-express/webp-images/uploads/2025/03/Property-1Ioana.png.webp" alt="Ioana Surpateanu">
         <span class="name">Ioana Surpateanu</span>
         <span class="role">CSO, Dreamer Labs</span>
       </div>
-      <div class="team-member">
-        <img src="https://syndika.co/wp-content/webp-express/webp-images/uploads/2025/03/Property-1Gauthier.png.webp" alt="Gauthier Vila" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22><circle cx=%2240%22 cy=%2240%22 r=%2240%22 fill=%22%23ed8936%22/><text x=%2240%22 y=%2245%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2220%22>GV</text></svg>'">
+      <div class="team-member reveal delay-1">
+        <img src="https://syndika.co/wp-content/webp-express/webp-images/uploads/2025/03/Property-1Gauthier.png.webp" alt="Gauthier Vila">
         <span class="name">Gauthier Vila</span>
         <span class="role">Founder, Zyfi</span>
       </div>
-      <div class="team-member">
-        <img src="https://syndika.co/wp-content/webp-express/webp-images/uploads/2025/03/Property-1Leon.png.webp" alt="Leon Stern" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22><circle cx=%2240%22 cy=%2240%22 r=%2240%22 fill=%22%23805ad5%22/><text x=%2240%22 y=%2245%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2220%22>LS</text></svg>'">
+      <div class="team-member reveal delay-2">
+        <img src="https://syndika.co/wp-content/webp-express/webp-images/uploads/2025/03/Property-1Leon.png.webp" alt="Leon Stern">
         <span class="name">Leon Stern</span>
-        <span class="role">Director of Growth, Polygon Labs</span>
+        <span class="role">Director, Polygon Labs</span>
       </div>
-      <div class="team-member">
-        <img src="https://syndika.co/wp-content/webp-express/webp-images/uploads/2025/03/Property-1Chris.png.webp" alt="Chris James Murphy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22><circle cx=%2240%22 cy=%2240%22 r=%2240%22 fill=%22%23f6ad55%22/><text x=%2240%22 y=%2245%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2220%22>CM</text></svg>'">
+      <div class="team-member reveal delay-3">
+        <img src="https://syndika.co/wp-content/webp-express/webp-images/uploads/2025/03/Property-1Chris.png.webp" alt="Chris James Murphy">
         <span class="name">Chris James Murphy</span>
-        <span class="role">Co-Founder, Klink Finance</span>
+        <span class="role">Co-Founder, Klink</span>
       </div>
-      <div class="team-member">
-        <img src="https://syndika.co/wp-content/webp-express/webp-images/uploads/2025/03/Property-1Sean.png.webp" alt="Sean Kiernan" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22><circle cx=%2240%22 cy=%2240%22 r=%2240%22 fill=%22%234299e1%22/><text x=%2240%22 y=%2245%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2220%22>SK</text></svg>'">
+      <div class="team-member reveal delay-1">
+        <img src="https://syndika.co/wp-content/webp-express/webp-images/uploads/2025/03/Property-1Sean.png.webp" alt="Sean Kiernan">
         <span class="name">Sean Kiernan</span>
         <span class="role">CEO, Greengage</span>
       </div>
-      <div class="team-member">
-        <img src="https://syndika.co/wp-content/webp-express/webp-images/uploads/2025/03/Property-1Lorenzo.png.webp" alt="Lorenzo Coni" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22><circle cx=%2240%22 cy=%2240%22 r=%2240%22 fill=%22%239f7aea%22/><text x=%2240%22 y=%2245%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2220%22>LC</text></svg>'">
+      <div class="team-member reveal delay-2">
+        <img src="https://syndika.co/wp-content/webp-express/webp-images/uploads/2025/03/Property-1Lorenzo.png.webp" alt="Lorenzo Coni">
         <span class="name">Lorenzo Coni</span>
-        <span class="role">Head of BD, Sweat Economy</span>
+        <span class="role">Head of BD, Sweat</span>
       </div>
-      <div class="team-member">
-        <img src="https://syndika.co/wp-content/webp-express/webp-images/uploads/2025/03/Property-1Poorya-Shafiei.png.webp" alt="Poorya Shafiei" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22><circle cx=%2240%22 cy=%2240%22 r=%2240%22 fill=%22%233182ce%22/><text x=%2240%22 y=%2245%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2220%22>PS</text></svg>'">
+      <div class="team-member reveal delay-3">
+        <img src="https://syndika.co/wp-content/webp-express/webp-images/uploads/2025/03/Property-1Poorya-Shafiei.png.webp" alt="Poorya Shafiei">
         <span class="name">Poorya Shafiei</span>
         <span class="role">COO, ZipClash</span>
       </div>
@@ -717,22 +1020,22 @@ img { display: block; max-width: 100%; height: auto; }
 <!-- Success Stories -->
 <section class="section section-alt">
   <div class="wrap">
-    <h2>Success Stories</h2>
-    <p class="lead">Real stories, real impact.</p>
+    <h2 class="reveal">Success Stories</h2>
+    <p class="lead reveal delay-1">Real stories, real impact.</p>
     <div class="testi-grid">
-      <div class="testi-card">
+      <div class="testi-card reveal delay-1">
         <p>"The team's strategic guidance and hands-on marketing support have allowed us to engage a broader community and refine our brand. As we approach our TGE, the strong support from Syndika has played a pivotal role in positioning Kima for long-term success."</p>
         <span class="author">— Kima Network</span>
       </div>
-      <div class="testi-card">
+      <div class="testi-card reveal delay-2">
         <p>"Syndika's ability to foster meaningful connections and drive innovation has been invaluable for us at Nominis. Thanks to the Syndika network, we've had the opportunity to collaborate with a diverse range of startups."</p>
         <span class="author">— Nominis</span>
       </div>
-      <div class="testi-card">
+      <div class="testi-card reveal delay-3">
         <p>"With Alex Cucer serving as CTO, the team's blockchain, security, and regulatory expertise helped us deliver scalable solutions that aligned with our long-term vision. Syndika also played a key role in InvestaX's strategic decisions."</p>
         <span class="author">— InvestaX</span>
       </div>
-      <div class="testi-card">
+      <div class="testi-card reveal delay-1">
         <p>"Syndika has been instrumental in helping us develop and maintain our complex software systems. They are knowledgeable, responsive, and consistently go above and beyond to ensure our success."</p>
         <span class="author">— Tea-Fi</span>
       </div>
@@ -743,17 +1046,33 @@ img { display: block; max-width: 100%; height: auto; }
 <!-- Partners -->
 <section id="partners" class="section">
   <div class="wrap">
-    <h2>Partners</h2>
-    <p class="lead">Collaborating with industry leaders to drive innovation.</p>
+    <h2 class="reveal">Partners</h2>
+    <p class="lead reveal delay-1">Collaborating with industry leaders to drive innovation.</p>
     <div class="partner-grid">
-      <div class="partner-logo"><span>Alty</span></div>
-      <div class="partner-logo"><span>Kima</span></div>
-      <div class="partner-logo"><span>Balthazar</span></div>
-      <div class="partner-logo"><span>Bitflex</span></div>
-      <div class="partner-logo"><span>Sixth Society</span></div>
-      <div class="partner-logo"><span>Zyfi</span></div>
-      <div class="partner-logo"><span>Trustyfy</span></div>
-      <div class="partner-logo"><span>Tea-Fi</span></div>
+      <div class="partner-logo reveal delay-1">
+        <img src="https://syndika.co/wp-content/webp-express/webp-images/uploads/2025/04/alty.png.webp" alt="Alty">
+      </div>
+      <div class="partner-logo reveal delay-2">
+        <img src="https://syndika.co/wp-content/webp-express/webp-images/uploads/2025/04/kima.png.webp" alt="Kima">
+      </div>
+      <div class="partner-logo reveal delay-3">
+        <img src="https://syndika.co/wp-content/webp-express/webp-images/uploads/2025/04/balthazar-300x102.png.webp" alt="Balthazar">
+      </div>
+      <div class="partner-logo reveal delay-1">
+        <img src="https://syndika.co/wp-content/webp-express/webp-images/uploads/2025/04/bitflex-300x90.png.webp" alt="Bitflex">
+      </div>
+      <div class="partner-logo reveal delay-2">
+        <img src="https://syndika.co/wp-content/webp-express/webp-images/uploads/2025/04/sixthsociety-300x90.png.webp" alt="Sixth Society">
+      </div>
+      <div class="partner-logo reveal delay-3">
+        <img src="https://syndika.co/wp-content/webp-express/webp-images/uploads/2025/04/zyfi.png.webp" alt="Zyfi">
+      </div>
+      <div class="partner-logo reveal delay-1">
+        <img src="https://syndika.co/wp-content/webp-express/webp-images/uploads/2025/04/trustyfy.png.webp" alt="Trustyfy">
+      </div>
+      <div class="partner-logo reveal delay-2">
+        <img src="https://syndika.co/wp-content/webp-express/webp-images/uploads/2025/04/tea-fi-300x90.png.webp" alt="Tea-Fi">
+      </div>
     </div>
   </div>
 </section>
